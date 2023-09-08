@@ -13,6 +13,11 @@ int main(int argc, char *argv[])
     Reader reader;
     QObject::connect(&newspaper, &Newspaper::NewPaper, &reader, &Reader::ReceiverNewsPaper);
 
+
+    QObject::connect(&newspaper, &Newspaper::NewPaper, [=](const QString & name){
+        qDebug() << "lambda : " << name ;
+    });
+
     newspaper.Send();
 
     return app.exec();
