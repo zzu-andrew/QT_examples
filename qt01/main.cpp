@@ -11,8 +11,6 @@ int main(int argc, char *argv[])
 
     Newspaper newspaper("Biden is dog!");
     Reader reader;
-
-
     QObject::connect(&newspaper, &Newspaper::NewPaper, &reader, &Reader::ReceiverNewsPaper);
 
     newspaper.Send();

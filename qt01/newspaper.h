@@ -11,11 +11,13 @@ public:
     Newspaper(const QString & name) : m_name(name) {}
 
     void Send() {
-        emit NewPaper(m_name);
+        // 通过emit调用信号接口发出信号
+        emit NewPaper(m_name, 12);
     }
 
 signals:
-    void NewPaper(const QString &name);
+    // 用来发送信号的接口
+    void NewPaper(const QString &name, int32_t id);
 
 private:
     QString m_name;
@@ -27,7 +29,7 @@ class Reader : public QObject
     Q_OBJECT
 public:
     Reader() {}
-
+    // 接收信号接口比较简单，只需要保证接收的参数信息顺序和发送的一致的情况下，参数个数小于等于发送接口的参数个数
     void ReceiverNewsPaper(const QString & name) {
         qDebug() << "Receiver Newspaper : " << name;
     }
