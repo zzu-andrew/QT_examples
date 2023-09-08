@@ -1,15 +1,21 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <QPushButton>
+#include "newspaper.h"
+
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+    QApplication app(argc, argv);
 
 
+    Newspaper newspaper("Biden is dog!");
+    Reader reader;
 
 
+    QObject::connect(&newspaper, &Newspaper::NewPaper, &reader, &Reader::ReceiverNewsPaper);
 
-    return a.exec();
+    newspaper.Send();
+
+    return app.exec();
 }
