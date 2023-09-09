@@ -4,6 +4,7 @@
 #include "newspaper.h"
 #include <QMenuBar>
 #include <QAction>
+#include <QToolBar>
 
 
 int main(int argc, char *argv[])
@@ -18,6 +19,13 @@ int main(int argc, char *argv[])
     win.menuBar()->addMenu("Edit");
     win.menuBar()->addMenu("Tools");
     win.menuBar()->addMenu("Help");
+
+    // 添加工具条
+    auto newToolBar = new QToolBar(&win);
+    newToolBar->setObjectName(QString::fromUtf8("newToolBar"));
+    win.addToolBar(Qt::RightToolBarArea, newToolBar);
+    newToolBar->addAction("paste");
+
 
     Newspaper newspaper("Biden is dog.");
     Reader reader;
