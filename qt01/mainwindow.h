@@ -1,6 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QTextEdit>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QTextStream>
+
 #include <QMainWindow>
 
 namespace Ui {
@@ -16,8 +21,15 @@ public:
     ~MainWindow();
 
     int32_t GetUi();
+
+    int32_t FileOperator();
+
+    void openFile();
+    void saveFile();
+
 private:
     Ui::MainWindow *ui;
+    QTextEdit * m_textEdit;
 };
 
 #endif // MAINWINDOW_H
