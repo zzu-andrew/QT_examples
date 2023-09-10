@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QTextCodec>
 #include <QTextEdit>
 #include <QFileDialog>
 #include <QMessageBox>

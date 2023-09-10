@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/images">
         <file>act_del_line.png</file>
+        <file alias="achou">阿酷尔工作室.png</file>
+        <file alias="cheer">cheer.gif</file>
     </qresource>
 </RCC>

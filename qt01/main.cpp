@@ -7,6 +7,9 @@
 #include <QToolBar>
 #include <QDialog>
 #include <QMessageBox>
+#include <QLabel>
+#include <QPixmap>
+#include <QMovie>
 
 
 int main(int argc, char *argv[])
@@ -18,8 +21,6 @@ int main(int argc, char *argv[])
 
     win.FileOperator();
 
-
-
     win.menuBar()->addMenu("Edit");
     win.menuBar()->addMenu("Tools");
     win.menuBar()->addMenu("Help");
@@ -30,11 +31,33 @@ int main(int argc, char *argv[])
     win.addToolBar(Qt::RightToolBarArea, newToolBar);
     newToolBar->addAction("paste");
 
+//    QLabel *label = new QLabel(&win);
+//    label->setText("Hello world!");
+//    label->show();
+
+//    QLabel * label = new QLabel(&win);
+//    label ->setText("Hello, World");
+//    label ->setText("<h1><a href=\"https://www.baidu.com\">百度一下</a></h1>");
+//    label ->setOpenExternalLinks(true);
+//    label->show();
+
+//    QPixmap pim(":/images/achou");
+//    QLabel *label = new QLabel;
+//    label->setPixmap(pim);
+//    label->show();
+
     // 打开一个默认情况下的模态对话框
     // 该对话框不关闭不能对主窗口进行任何操作
-    QDialog dialog(&win);
-    dialog.setWindowTitle("Hello, dialog!");
-    dialog.show();
+//    QDialog dialog(&win);
+//    dialog.setWindowTitle("Hello, dialog!");
+//    dialog.show();
+
+    auto movie = new QMovie(":/images/cheer.gif");
+    movie->start();
+    QLabel *label = new QLabel;
+    label->setMovie(movie);
+    label->show();
+
 
     // 弹窗消息
 //    QMessageBox::about(&win, "MessageBox", "Test for message box!");
