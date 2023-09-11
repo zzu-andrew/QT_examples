@@ -3,12 +3,20 @@
 #include <QSpinBox>
 #include <QSlider>
 #include <QHBoxLayout>
+#include "eventlabel.h"
+
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow window;
     window.show();
+
+    // EventLabel测试
+    EventLabel label;
+    label.setWindowTitle("MoseEvent Demo");
+    label.resize(300, 200);
+    label.show();
 
     // 单独常见一个窗口，因为主窗口中已经绑定过布局了这里就不绑定了
     QWidget mainWin;

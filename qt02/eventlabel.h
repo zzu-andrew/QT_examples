@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QWidget>
 #include <QLabel>
+#include <QMouseEvent>
+#include <QEvent>
 
 class EventLabel : public QLabel
 {
@@ -14,6 +16,8 @@ protected:
     void mousePressEvent(QMouseEvent *ev) override;
     void mouseMoveEvent(QMouseEvent *ev) override;
     void mouseReleaseEvent(QMouseEvent *ev) override;
+
+    bool event(QEvent *e) override;
 
 
 };
