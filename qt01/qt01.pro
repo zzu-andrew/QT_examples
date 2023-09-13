@@ -34,6 +34,7 @@ HEADERS += \
         newspaper.h
 
 FORMS += \
+        list_ui.ui \
         mainwindow.ui
 
 # Default rules for deployment.

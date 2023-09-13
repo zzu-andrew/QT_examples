@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QMovie>
+#include "ui_list_ui.h"
 
 
 int main(int argc, char *argv[])
@@ -26,10 +27,14 @@ int main(int argc, char *argv[])
     win.menuBar()->addMenu("Help");
 
     // 添加工具条
-    auto newToolBar = new QToolBar(&win);
-    newToolBar->setObjectName(QString::fromUtf8("newToolBar"));
-    win.addToolBar(Qt::RightToolBarArea, newToolBar);
-    newToolBar->addAction("paste");
+//    auto newToolBar = new QToolBar(&win);
+//    newToolBar->setObjectName(QString::fromUtf8("newToolBar"));
+//    win.addToolBar(Qt::RightToolBarArea, newToolBar);
+//    newToolBar->addAction("paste");
+
+    Ui_Form uiForm;
+    uiForm.setupUi(&win);
+
 
 //    QLabel *label = new QLabel(&win);
 //    label->setText("Hello world!");
@@ -52,11 +57,11 @@ int main(int argc, char *argv[])
 //    dialog.setWindowTitle("Hello, dialog!");
 //    dialog.show();
 
-    auto movie = new QMovie(":/images/cheer.gif");
-    movie->start();
-    QLabel *label = new QLabel;
-    label->setMovie(movie);
-    label->show();
+//    auto movie = new QMovie(":/images/cheer");
+//    movie->start();
+//    QLabel *label = new QLabel;
+//    label->setMovie(movie);
+//    label->show();
 
 
     // 弹窗消息
