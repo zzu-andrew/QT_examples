@@ -32,57 +32,6 @@ HEADERS += \
         mainwindow.h
 
 FORMS += \
-        forms/allwindow.ui \
-        forms/common/fontedit.ui \
-        forms/completer/completerwindow.ui \
-        forms/constraints/columncollatepanel.ui \
-        forms/constraints/columndefaultpanel.ui \
-        forms/constraints/columnforeignkeypanel.ui \
-        forms/constraints/columngeneratedpanel.ui \
-        forms/constraints/columnprimarykeypanel.ui \
-        forms/constraints/columnuniqueandnotnullpanel.ui \
-        forms/constraints/constraintcheckpanel.ui \
-        forms/constraints/tableforeignkeypanel.ui \
-        forms/constraints/tablepkanduniquepanel.ui \
-        forms/constraints/tableprimarykeypanel.ui \
-        forms/dbtree/dbtree.ui \
-        forms/debugconsole.ui \
-        forms/dialogs/aboutdialog.ui \
-        forms/dialogs/bindparamsdialog.ui \
-        forms/dialogs/columndialog.ui \
-        forms/dialogs/configdialog.ui \
-        forms/dialogs/constraintdialog.ui \
-        forms/dialogs/cssdebugdialog.ui \
-        forms/dialogs/dbdialog.ui \
-        forms/dialogs/ddlpreviewdialog.ui \
-        forms/dialogs/errorsconfirmdialog.ui \
-        forms/dialogs/execfromfiledialog.ui \
-        forms/dialogs/fileexecerrorsdialog.ui \
-        forms/dialogs/importdialog.ui \
-        forms/dialogs/indexdialog.ui \
-        forms/dialogs/indexexprcolumndialog.ui \
-        forms/dialogs/languagedialog.ui \
-        forms/dialogs/messagelistdialog.ui \
-        forms/dialogs/newconstraintdialog.ui \
-        forms/dialogs/newversiondialog.ui \
-        forms/dialogs/populateconfigdialog.ui \
-        forms/dialogs/populatedialog.ui \
-        forms/dialogs/quitconfirmdialog.ui \
-        forms/dialogs/searchtextdialog.ui \
-        forms/dialogs/sortdialog.ui \
-        forms/dialogs/triggercolumnsdialog.ui \
-        forms/dialogs/triggerdialog.ui \
-        forms/dialogs/versionconvertsummarydialog.ui \
-        forms/forms/sqlformatterplugin.ui \
-        forms/statusfield.ui \
-        forms/windows/codesnippeteditor.ui \
-        forms/windows/collationseditor.ui \
-        forms/windows/ddlhistorywindow.ui \
-        forms/windows/editorwindow.ui \
-        forms/windows/functionseditor.ui \
-        forms/windows/sqliteextensioneditor.ui \
-        forms/windows/tablewindow.ui \
-        forms/windows/viewwindow.ui \
         mainwindow.ui
 
 # Default rules for deployment.
