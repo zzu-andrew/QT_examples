@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QMovie>
+#include "ui_list_ui.h"
 #include <QStringList>
 #include <QCompleter>
 #include <QLineEdit>
@@ -29,6 +30,13 @@ int main(int argc, char *argv[])
 //    win.menuBar()->addMenu("Help");
 
 //    // 添加工具条
+    win.FileOperator();
+
+    win.menuBar()->addMenu("Edit");
+    win.menuBar()->addMenu("Tools");
+    win.menuBar()->addMenu("Help");
+
+    // 添加工具条
 //    auto newToolBar = new QToolBar(&win);
 //    newToolBar->setObjectName(QString::fromUtf8("newToolBar"));
 //    win.addToolBar(Qt::RightToolBarArea, newToolBar);
@@ -45,6 +53,21 @@ int main(int argc, char *argv[])
 //    QLineEdit *edit = new QLineEdit(&win);
 //    edit->setCompleter(completer);
 //    edit->show();
+    Ui_Form uiForm;
+    uiForm.setupUi(&win);
+
+
+    QStringList tiplist;
+    tiplist << "Hello" << "How are you!" << "Haha" << "Oh no!";\
+    // 输入辅助
+    QCompleter *completer = new QCompleter(tiplist, &win);
+    // 设置大小写不敏感
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    // 输入内容包含就会提示
+    completer->setFilterMode(Qt::MatchContains);
+    QLineEdit *edit = new QLineEdit(&win);
+    edit->setCompleter(completer);
+    edit->show();
 
 
 //    QLabel *label = new QLabel(&win);
@@ -68,6 +91,9 @@ int main(int argc, char *argv[])
 //    dialog.setWindowTitle("Hello, dialog!");
 //    dialog.show();
 
+//    auto movie = new QMovie(":/images/cheer");
+//    movie->start();
+//    QLabel *label = new QLabel;
 //    auto movie = new QMovie(":/images/cheer.gif");
 //    movie->start();
 //    QLabel *label = new QLabel(&win);

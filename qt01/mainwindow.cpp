@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -28,14 +29,14 @@ int32_t MainWindow::FileOperator()
     QMenu *file = menuBar()->addMenu("&File");
     // 创建一个菜单子项
     auto openAction = new QAction(QIcon(":/images/act_del_line.png"), tr("&Open..."), this);
+//    auto openAction = new QAction(this);
     // 菜单子项添加快捷键
     openAction->setShortcuts(QKeySequence::Open);
     // 当鼠标放到菜单子项上时status bar上面将会显示
     openAction->setStatusTip(tr("Open an existing file"));
     file->addAction(openAction);
 
-    auto saveAction = new QAction(QIcon(":/images/act_del_line.png"),
-    tr("&Save..."), this);
+    auto saveAction = new QAction(QIcon(":/images/act_del_line.png"),tr("&Save..."), this);
     saveAction->setShortcuts(QKeySequence::Save);
     saveAction->setStatusTip(tr("Save a new file"));
     // 添加一个菜单用来放置上述菜单子项

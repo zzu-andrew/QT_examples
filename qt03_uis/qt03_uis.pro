@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2023-09-07T22:24:15
+# Project created by QtCreator 2023-09-13T16:16:03
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = qt01
+TARGET = qt03_uis
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -26,21 +26,15 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
-        newspaper.cpp
+        mainwindow.cpp
 
 HEADERS += \
-        mainwindow.h \
-        newspaper.h
+        mainwindow.h
 
 FORMS += \
-        list_ui.ui \
         mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-RESOURCES += \
-    res/res.qrc
