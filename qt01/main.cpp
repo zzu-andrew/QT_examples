@@ -23,6 +23,13 @@ int main(int argc, char *argv[])
     win.show();
     // 添加menu
 
+//    win.FileOperator();
+
+//    win.menuBar()->addMenu("Edit");
+//    win.menuBar()->addMenu("Tools");
+//    win.menuBar()->addMenu("Help");
+
+//    // 添加工具条
     win.FileOperator();
 
     win.menuBar()->addMenu("Edit");
@@ -35,6 +42,17 @@ int main(int argc, char *argv[])
 //    win.addToolBar(Qt::RightToolBarArea, newToolBar);
 //    newToolBar->addAction("paste");
 
+//    QStringList tiplist;
+//    tiplist << "Hello" << "How are you!" << "Haha" << "Oh no!";\
+//    // 输入辅助
+//    QCompleter *completer = new QCompleter(tiplist, &win);
+//    // 设置大小写不敏感
+//    completer->setCaseSensitivity(Qt::CaseInsensitive);
+//    // 输入内容包含就会提示
+//    completer->setFilterMode(Qt::MatchContains);
+//    QLineEdit *edit = new QLineEdit(&win);
+//    edit->setCompleter(completer);
+//    edit->show();
     Ui_Form uiForm;
     uiForm.setupUi(&win);
 
@@ -99,14 +117,14 @@ int main(int argc, char *argv[])
 
 
 
-    Newspaper newspaper("Biden is dog.");
-    Reader reader;
-    QObject::connect(&newspaper, &Newspaper::NewPaper, &reader, &Reader::ReceiverNewsPaper);
-    QObject::connect(&newspaper, &Newspaper::NewPaper, [=](const QString & name){
-        qDebug() << "lambda : " << name ;
-    });
+//    Newspaper newspaper("Biden is dog.");
+//    Reader reader;
+//    QObject::connect(&newspaper, &Newspaper::NewPaper, &reader, &Reader::ReceiverNewsPaper);
+//    QObject::connect(&newspaper, &Newspaper::NewPaper, [=](const QString & name){
+//        qDebug() << "lambda : " << name ;
+//    });
 
-    newspaper.Send();
+//    newspaper.Send();
 
     return app.exec();
 }
