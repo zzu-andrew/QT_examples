@@ -14,7 +14,7 @@ TEMPLATE = app
 
 INCLUDEPATH += $$PWD/3rd/zookeeper/include
 
-LIBS += -L$$PWD/3rd/zookeeper/lib/Debug -lzookeeper
+LIBS += -L$$PWD/3rd/zookeeper/lib/Debug -lzookeeper -lhashtable
 
 
 

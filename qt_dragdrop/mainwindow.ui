@@ -10,13 +10,20 @@
     <height>360</height>
    </rect>
   </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QTextEdit" name="textEdit"/>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -26,7 +33,7 @@
      <x>0</x>
      <y>0</y>
      <width>532</width>
-     <height>28</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

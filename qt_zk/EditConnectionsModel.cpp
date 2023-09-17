@@ -321,10 +321,12 @@ void EditConnectionsModel::SaveConnectionsToLocalConfig()
         xJsonOne["name"] = xCon.strName;
         xJsonOne["hosts"] = xCon.strHosts;
 
+
         xJsonConnections.push_back(xJsonOne);
     }
 
     QJsonDocument xDoc(xJsonConnections);
+
 
     const auto& xByteArray = xDoc.toJson(QJsonDocument::Indented);
 
