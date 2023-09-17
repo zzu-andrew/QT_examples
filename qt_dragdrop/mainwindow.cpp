@@ -15,6 +15,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setAcceptDrops(true);
     ui->textEdit->setAcceptDrops(false);
+    // 这里必须去下textEdit的默认拖拽方式，因为textEdit的默认只是现实路径名，
+    // 要是想显示全部文件这里这里就需要将textEdit的默认拖拽给关掉
+    ui->textEdit->setAcceptDrops(false); // 取消textEdit的默认拖拽方式
+
+
 }
 
 MainWindow::~MainWindow()
@@ -22,6 +27,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// 鼠标放开事件
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
     // 获取事件带过来的mime数据(元数据)
@@ -41,6 +47,8 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
             ui->textEdit->setText(in.readAll());
         }
     }
+
+
 }
 
 void MainWindow::dropEvent(QDropEvent *event)
