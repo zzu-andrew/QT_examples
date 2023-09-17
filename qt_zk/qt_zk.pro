@@ -1,21 +1,29 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2023-09-13T16:16:03
+# Project created by QtCreator 2023-09-15T10:27:42
 #
 #-------------------------------------------------
 
-QT       += core gui charts
+QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = qt03_uis
+TARGET = qt_zk
 TEMPLATE = app
+
+
+INCLUDEPATH += $$PWD/3rd/zookeeper/include
+
+LIBS += -L$$PWD/3rd/zookeeper/lib/Debug -lzookeeper
+
+
+
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
-DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += QT_DEPRECATED_WARNINGS  THREADED
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -26,15 +34,37 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        CreateChildNodeDialog.cpp \
+        DeleteNodeDialog.cpp \
+        EditConnectionsModel.cpp \
+        EditValueDialog.cpp \
+        Language.cpp \
+        ZKClientGUI.cpp \
+        ZKConnectionWorker.cpp \
+        ZKDataViewWidget.cpp \
+        ZKNodeTreeItem.cpp \
+        ZKNodeTreeModel.cpp
+
 
 HEADERS += \
-        mainwindow.h
+        CreateChildNodeDialog.h \
+        DeleteNodeDialog.h \
+        EditValueDialog.h \
+        Language.h \
+        ZKClientGUI.h \
+        ZKConnection.h \
+        ZKNodeTreeModel.h \
+        ZKConnectionWorker.h \
+        ZKDataViewWidget.h \
+        ZKNodeTreeItem.h
 
 FORMS += \
-        dialog.ui \
-        mainwindow.ui \
-        widget.ui
+        forms/CreateChildNodeDialog.ui \
+        forms/DeleteNodeDialog.ui \
+        forms/EditValueDialog.ui \
+        forms/ZKClientGUI.ui \
+        forms/ZKDataViewWidget.ui
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

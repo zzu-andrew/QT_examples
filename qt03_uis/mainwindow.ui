@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>659</width>
-    <height>439</height>
+    <width>373</width>
+    <height>346</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -161,10 +161,32 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>659</width>
+     <width>373</width>
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPeast"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_Help">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menu_Help"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -175,6 +197,26 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="text">
+    <string>Copy</string>
+   </property>
+  </action>
+  <action name="actionPeast">
+   <property name="text">
+    <string>Peast</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
@@ -186,12 +228,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>53</x>
-     <y>60</y>
+     <x>125</x>
+     <y>71</y>
     </hint>
     <hint type="destinationlabel">
-     <x>17</x>
-     <y>196</y>
+     <x>88</x>
+     <y>281</y>
     </hint>
    </hints>
   </connection>
@@ -202,12 +244,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>147</x>
-     <y>60</y>
+     <x>215</x>
+     <y>71</y>
     </hint>
     <hint type="destinationlabel">
-     <x>154</x>
-     <y>196</y>
+     <x>178</x>
+     <y>274</y>
     </hint>
    </hints>
   </connection>
@@ -218,12 +260,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>322</x>
-     <y>61</y>
+     <x>316</x>
+     <y>71</y>
     </hint>
     <hint type="destinationlabel">
-     <x>289</x>
-     <y>195</y>
+     <x>279</x>
+     <y>273</y>
     </hint>
    </hints>
   </connection>
@@ -234,12 +276,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>17</x>
-     <y>109</y>
+     <x>88</x>
+     <y>194</y>
     </hint>
     <hint type="destinationlabel">
-     <x>48</x>
-     <y>66</y>
+     <x>122</x>
+     <y>71</y>
     </hint>
    </hints>
   </connection>
@@ -250,8 +292,8 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>154</x>
-     <y>152</y>
+     <x>178</x>
+     <y>230</y>
     </hint>
     <hint type="destinationlabel">
      <x>178</x>
@@ -266,12 +308,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>292</x>
-     <y>148</y>
+     <x>279</x>
+     <y>226</y>
     </hint>
     <hint type="destinationlabel">
-     <x>319</x>
-     <y>67</y>
+     <x>316</x>
+     <y>71</y>
     </hint>
    </hints>
   </connection>
