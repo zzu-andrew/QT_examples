@@ -69,6 +69,7 @@ void MainWindow::mousePressEvent(QMouseEvent * event)
     QPainter painter; // 创建画板
     painter.begin(&tempPixmap);
     // 给图片蒙上一层透明但是淡淡的黑色效果
+    painter.fillRect(pixmap.rect(), QColor(121, 127, 127, 127));
 
 
 
