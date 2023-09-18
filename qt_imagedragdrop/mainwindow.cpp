@@ -117,6 +117,7 @@ void MainWindow::dragMoveEvent(QDragMoveEvent *event)
 
 void MainWindow::dropEvent(QDropEvent *event)
 {
+    // 获取mimedata
     if (event->mimeData()->hasFormat("myimage/png")) {
         QByteArray itemData = event->mimeData()->data("myimage/png");
         QDataStream dataStream(&itemData, QIODevice::ReadOnly);
