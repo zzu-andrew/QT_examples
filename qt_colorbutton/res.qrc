@@ -2,4 +2,7 @@
     <qresource prefix="/images">
         <file alias="achou">achou.png</file>
     </qresource>
+    <qresource prefix="/css">
+        <file>my.qss</file>
+    </qresource>
 </RCC>
