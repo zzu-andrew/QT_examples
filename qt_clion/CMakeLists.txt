@@ -67,7 +67,8 @@ add_executable(${PROJECT_NAME}
     mainwindow.cpp)
 
 target_include_directories(${PROJECT_NAME}
-    PUBLIC ./)
+    PUBLIC ./
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_autogen/include)
 
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
