@@ -19,7 +19,7 @@ FireShot::~FireShot() {
 int32_t FireShot::CreateActions() {
 
     m_lpSettingAction = new QAction(tr("&Settings"), this);
-    QIcon settingIcon(":/images/menu-setting.png");
+    QIcon settingIcon(":/icons/icon/menu-setting.png");
     m_lpShotAction;  // 截图按钮
     m_lpQuitAction; // 退出按钮
 
