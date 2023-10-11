@@ -64,7 +64,7 @@ endif()
 
 add_executable(${PROJECT_NAME}
     main.cpp
-    mainwindow.cpp)
+        fireshot.cpp)
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC ./

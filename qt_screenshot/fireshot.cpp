@@ -4,16 +4,16 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_MainWindow.h" resolved
 
-#include "mainwindow.h"
+#include "fireshot.h"
 #include "ui_mainwindow.h"
 
 
-MainWindow::MainWindow(QWidget *parent) :
-        QMainWindow(parent), ui(new Ui::MainWindow) {
+FireShot::FireShot(QWidget *parent) :
+        QMainWindow(parent), ui(new Ui::FireShot) {
     ui->setupUi(this);
 }
 
-MainWindow::~MainWindow() {
+FireShot::~FireShot() {
     delete ui;
 }
 
