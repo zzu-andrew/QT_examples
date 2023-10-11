@@ -5,23 +5,26 @@
 #ifndef TEST_MAINWINDOW_H
 #define TEST_MAINWINDOW_H
 
-#include <QMainWindow>
+#include <QDialog>
+#include <QSystemTrayIcon>
 
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class FireShot; }
-QT_END_NAMESPACE
-
-class FireShot : public QMainWindow {
+class FireShot : public QDialog {
 Q_OBJECT
 
 public:
     explicit FireShot(QWidget *parent = nullptr);
+    int32_t CreateActions();
+
 
     ~FireShot() override;
 
 private:
-    Ui::FireShot *ui;
+    QSystemTrayIcon* m_lpTrayIcon; // 放置一个系统托盘图标
+    QAction* m_lpSettingAction;  // 系统托盘上的设置按钮
+    QAction* m_lpShotAction;  // 截图按钮
+    QAction* m_lpQuitAction; // 退出按钮
+
 };
 
 

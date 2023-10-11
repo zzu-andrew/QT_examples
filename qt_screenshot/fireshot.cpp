@@ -4,17 +4,25 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_MainWindow.h" resolved
 
+#include <QAction>
+
 #include "fireshot.h"
-#include "ui_mainwindow.h"
 #include "utils/spdlog_wrapper.h"
 
-FireShot::FireShot(QWidget *parent) :
-        QMainWindow(parent), ui(new Ui::FireShot) {
-    ui->setupUi(this);
+FireShot::FireShot(QWidget *parent) : QDialog(parent) {
+
 }
 
 FireShot::~FireShot() {
-    delete ui;
     SPD_FLUSH();
+}
+int32_t FireShot::CreateActions() {
+
+    m_lpSettingAction = new QAction(tr("&Settings"), this);
+    QIcon settingIcon(":/images/menu-setting.png");
+    m_lpShotAction;  // 截图按钮
+    m_lpQuitAction; // 退出按钮
+
+    return 0;
 }
 

@@ -52,6 +52,7 @@ add_executable(${PROJECT_NAME}
         fireshot.cpp
         ${core_src}
         ${utils_src}
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/res.qrc
         )
 
 
