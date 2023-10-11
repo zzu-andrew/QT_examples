@@ -9,19 +9,19 @@
 
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui { class FireShot; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow {
+class FireShot : public QMainWindow {
 Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit FireShot(QWidget *parent = nullptr);
 
-    ~MainWindow() override;
+    ~FireShot() override;
 
 private:
-    Ui::MainWindow *ui;
+    Ui::FireShot *ui;
 };
 
 

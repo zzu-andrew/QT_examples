@@ -11,7 +11,7 @@ set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
 
 if(WIN32)
-    set(CMAKE_PREFIX_PATH "D:/software/Qt5.13.0/mingw73_64/lib/cmake/Qt5")
+    set(CMAKE_PREFIX_PATH D:/software/Qt5.13.0/mingw73_64/lib/cmake/Qt5)
 else()
     set(CMAKE_PREFIX_PATH "/usr/lib/x86_64-linux-gnu/cmake/Qt5")
 endif()
