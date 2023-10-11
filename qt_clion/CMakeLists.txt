@@ -23,45 +23,6 @@ if (NOT CMAKE_PREFIX_PATH)
 endif ()
 
 
-## 添加用户界面文件
-#set(FORMS
-#        mainwindow.ui
-#        )
-
-# 自动生成用户界面文件的 C++ 代码
-#qt5_wrap_ui(UI_HEADERS ${FORMS})
-
-# 自动生成用户界面文件的 C++ 代码
-# 自动生成用户界面文件的 C++ 代码
-#set(UI_HEADERS)
-if(WIN32)
-
-#foreach(FORM ${FORMS})
-#    get_filename_component(FORM_BASE ${FORM} NAME_WE)
-#    set(UI_HEADER "${CMAKE_CURRENT_BINARY_DIR}/ui_${FORM_BASE}.h")
-#    list(APPEND UI_HEADERS ${UI_HEADER})
-#    add_custom_command(
-#            OUTPUT ${UI_HEADER}
-#            COMMAND ${Qt5_DIR}/../../../bin/uic ${CMAKE_CURRENT_SOURCE_DIR}/${FORM} -o ${UI_HEADER}
-#            DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${FORM}
-#    )
-#endforeach()
-
-else()
-#    foreach(FORM ${FORMS})
-#        get_filename_component(FORM_BASE ${FORM} NAME_WE)
-#        set(UI_HEADER "${CMAKE_CURRENT_BINARY_DIR}/ui_${FORM_BASE}.h")
-#        list(APPEND UI_HEADERS ${UI_HEADER})
-#        add_custom_command(
-#                OUTPUT ${UI_HEADER}
-#                COMMAND /usr/bin/uic ${CMAKE_CURRENT_SOURCE_DIR}/${FORM} -o ${UI_HEADER}
-#                DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${FORM}
-#        )
-#    endforeach()
-
-endif()
-
-
 add_executable(${PROJECT_NAME}
     main.cpp
     mainwindow.cpp)

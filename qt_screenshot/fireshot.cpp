@@ -11,9 +11,6 @@
 FireShot::FireShot(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::FireShot) {
     ui->setupUi(this);
-#ifdef Q_OS_UNIX
-    gdk_init(NULL, NULL);
-#endif // Q_OS_LINUX
 }
 
 FireShot::~FireShot() {
