@@ -7,8 +7,10 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 set(QT_VERSION 5)
-set(REQUIRED_LIBS Core Gui Widgets)
-set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
+set(REQUIRED_LIBS Core Gui Widgets Network)
+set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network)
+
+add_compile_options(-D USE_SPDLOG_)
 
 if(WIN32)
     set(CMAKE_PREFIX_PATH "D:/software/Qt5.13.0/mingw73_64/lib/cmake/Qt5")
@@ -61,14 +63,25 @@ else()
 
 endif()
 
+#  add core
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core core_src)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/utils utils_src)
 
 add_executable(${PROJECT_NAME}
-    main.cpp
-        fireshot.cpp)
+        main.cpp
+        fireshot.cpp
+        ${core_src}
+        ${utils_src}
+        )
+
+#if(WIN32)
+#    target_link_libraries(${PROJECT_NAME} xcb xcb-util)
+#endif()
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC ./
-    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_autogen/include)
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_autogen/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rd)
 
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
