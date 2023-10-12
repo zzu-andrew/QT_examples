@@ -24,4 +24,7 @@
         <file>icon/uncheck.png</file>
         <file>icon/up-arrow.png</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>image/fire.png</file>
+    </qresource>
 </RCC>

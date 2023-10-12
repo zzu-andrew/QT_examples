@@ -8,13 +8,11 @@
 
 
 #include <QWidget>
-#include <screen/workspace.h>
 #include <QPixmap>
 #include <QPainter>
-
-#include "core/screenlist.h"
-
 #include <memory>
+#include "screen_list.h"
+
 
 class Widget : public QWidget
 {
@@ -44,7 +42,6 @@ protected:
 
 private:
     QString m_status;  //unknown, active, giveup
-    Workspace* m_workspace;
     std::shared_ptr<ScreenList> m_screenlist;
 };
 

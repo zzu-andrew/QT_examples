@@ -12,7 +12,6 @@
 
 Widget::Widget(QWidget* parent)
         : QWidget(parent)
-        , m_workspace(new Workspace(this))
         , m_screenlist(nullptr)
         , m_status("unknown")
 {
@@ -42,7 +41,6 @@ void Widget::start(std::shared_ptr<ScreenList> list, int index)
     setCursor(Qt::ArrowCursor);
 
     m_screenlist = list;
-    m_workspace->start(m_screenlist, index);
 }
 
 void Widget::cleanup()
@@ -53,22 +51,17 @@ void Widget::cleanup()
     SPD_TRACE("is visable = {0} && w: {1}, h: {2} @ {3}", this->isVisible(), size().width(), size().height(), __FUNCTION__);
 
     m_status = "unknown";
-    m_workspace->cleanup();
 
     update();
 }
 
-Workspace* Widget::workspace() const
-{
-    return m_workspace;
-}
 
 void Widget::finishConfirmArea()
 {
-    if (m_workspace->areaConfirmed() == true)
-        m_status = "active";
-    else
-        m_status = "giveup";
+    //if (m_workspace->areaConfirmed() == true)
+    //    m_status = "active";
+    //else
+    //    m_status = "giveup";
 }
 
 void Widget::showEvent(QShowEvent* event)
@@ -101,7 +94,7 @@ void Widget::hideEvent(QHideEvent* event)
 
 void Widget::closeEvent(QCloseEvent* event)
 {
-    event->ignore();
+    //event->ignore();
 
     SPD_TRACE("{0} stat = {1}", __FUNCTION__, m_status.toStdString().c_str());
 
@@ -110,26 +103,20 @@ void Widget::closeEvent(QCloseEvent* event)
 
 void Widget::mousePressEvent(QMouseEvent* event)
 {
-    if (m_status != "giveup")
-        m_workspace->onMousePress(event);
 }
 
 void Widget::mouseMoveEvent(QMouseEvent* event)
 {
     SPD_TRACE("{0} stat = {1}", __FUNCTION__, m_status.toStdString().c_str());
-    if (m_status != "giveup")
-        m_workspace->onMouseMove(event);
 }
 
 void Widget::mouseReleaseEvent(QMouseEvent* event)
 {
-    if (m_status != "giveup")
-        m_workspace->onMouseRelease(event);
+        //m_workspace->onMouseRelease(event);
 }
 
 void Widget::keyPressEvent(QKeyEvent* event)
 {
-    m_workspace->onKeyPress(event);
 }
 
 void Widget::paintEvent(QPaintEvent* event)
@@ -140,7 +127,6 @@ void Widget::paintEvent(QPaintEvent* event)
 
     QPainter painter(this);
 
-    m_workspace->draw(painter);
 }
 
 void Widget::enterEvent(QEvent* event)

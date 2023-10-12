@@ -20,12 +20,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    //设置系统默认字体
-    QFont defaultFont("微软雅黑",9);
-    QApplication::setFont(defaultFont);
+    FireShot fireShot;
+    fireShot.show();
 
-    QPushButton button("Hello world!", nullptr);
-    button.resize(200, 100);
-    button.show();
     return QApplication::exec();
 }

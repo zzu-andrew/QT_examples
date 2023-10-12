@@ -29,7 +29,7 @@ private:
     //QList<Widget*>* m_unused_widgets;
 
 signals:
-    void ShotDone(Starter*);
+    void ShotDone(ScreenShot*);
     void ShotResult(std::shared_ptr<QPixmap> pixmap);
 
 private slots:

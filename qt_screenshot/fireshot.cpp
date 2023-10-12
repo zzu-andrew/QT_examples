@@ -10,15 +10,21 @@
 
 #include "fireshot.h"
 #include "utils/spdlog_wrapper.h"
-
-
+#include "fireshot_errno.h"
 
 FireShot::FireShot(QWidget *parent) :
     QDialog(parent), m_lpTrayIcon(new QSystemTrayIcon(this)),
     m_lpTrayIconMenu(new QMenu(this)),
-    m_lpSettingDlg(new SettingDlg(this),
-    m_bShotting(false)) {
+    m_lpSettingDlg(new SettingDlg(this)),
+    m_bShotting(false) {
+    CreateActions();
+    CreateTrayWithIcon();
+    //
+    setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+    // 透明背景
+    setAttribute(Qt::WA_TranslucentBackground, true);
 
+    m_lpTrayIcon->show();
 }
 
 FireShot::~FireShot() {
@@ -71,4 +77,37 @@ void FireShot::OnStartShot() {
 
 
 }
+
+void FireShot::OnShotDone(ScreenShot *starer) {
+
+}
+
+void FireShot::OnExitShot() {
+
+}
+
+int32_t FireShot::CreateTrayWithIcon() {
+
+    m_lpTrayIconMenu->addAction(m_lpShotAction);
+    m_lpTrayIconMenu->addAction(m_lpSettingAction);
+    m_lpTrayIconMenu->addAction(m_lpQuitAction);
+
+    m_lpTrayIcon->setContextMenu(m_lpTrayIconMenu);
+    m_lpTrayIcon->setIcon(QIcon(":/images/image/fire.png"));
+    m_lpTrayIcon->setToolTip(tr("FireShot"));
+
+    return 0;
+}
+
+void FireShot::ConstructSignal() {
+    connect(this, &FireShot::SatrtShot, this, &FireShot::OnStartShot);
+    connect(this, &FireShot::CheckHotKey, m_lpSettingDlg, &SettingDlg::InitHotKeyValue);
+    connect(m_lpTrayIcon, &QSystemTrayIcon::activated, this, &FireShot::OnIconActivated);
+}
+
+void FireShot::OnIconActivated(QSystemTrayIcon::ActivationReason reason) {
+
+}
+
+
 

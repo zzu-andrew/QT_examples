@@ -11,22 +11,33 @@
 
 #include "config/tray_setting.h"
 
+class ScreenShot;
+
 class FireShot : public QDialog {
 Q_OBJECT
 
 public:
     explicit FireShot(QWidget *parent = nullptr);
     int32_t CreateActions();
+    int32_t CreateTrayWithIcon();
+    void ConstructSignal();
 
-    void OnShowSetting();
 
     ~FireShot() override;
 
+signals:
+    void SatrtShot();
+    void ShotDone(FireShot* starer);
+    void CheckHotKey(uint32_t value);
+    void StopShot(FireShot* starter);
+
 private slots:
     void OnStartShot();
-    void OnShotDone(Starter* starer);
+    void OnShotDone(ScreenShot* starer);
     void OnExitShot();
     void OnShowSetting();
+
+    void OnIconActivated(QSystemTrayIcon::ActivationReason reason);
 
 private:
     QSystemTrayIcon* m_lpTrayIcon; // 放置一个系统托盘图标
@@ -35,7 +46,7 @@ private:
     QAction* m_lpShotAction;  // 截图按钮
     QAction* m_lpQuitAction; // 退出按钮
     SettingDlg *m_lpSettingDlg; // tray settings
-    bool m_bShotting; //
+    bool m_bShotting; // 是否正在截图
 
 };
 

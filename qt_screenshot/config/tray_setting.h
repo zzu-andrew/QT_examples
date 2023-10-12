@@ -19,6 +19,11 @@ public:
     SettingDlg(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
     ~SettingDlg() override;
 
+signals:
+    void SaveHotKeyConfig();
+    void UpdateHotKeyText(uint32_t value);
+    void UpdateHotKeyResult(bool success);
+    void InitHotKeyValue(uint32_t value);
 
 private:
     Ui::Settings * ui;

@@ -25,3 +25,11 @@ void ScreenShot::rasie() {
 void ScreenShot::init(QWidget *parent) {
 
 }
+
+void ScreenShot::finishShot(int code) {
+
+}
+
+void ScreenShot::finishConfirmArea() {
+
+}
