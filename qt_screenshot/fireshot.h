@@ -7,7 +7,9 @@
 
 #include <QDialog>
 #include <QSystemTrayIcon>
+#include <QDialog>
 
+#include "config/tray_setting.h"
 
 class FireShot : public QDialog {
 Q_OBJECT
@@ -16,14 +18,17 @@ public:
     explicit FireShot(QWidget *parent = nullptr);
     int32_t CreateActions();
 
+    void OnShowSetting();
 
     ~FireShot() override;
 
 private:
     QSystemTrayIcon* m_lpTrayIcon; // 放置一个系统托盘图标
+    QMenu* m_lpTrayIconMenu;
     QAction* m_lpSettingAction;  // 系统托盘上的设置按钮
     QAction* m_lpShotAction;  // 截图按钮
     QAction* m_lpQuitAction; // 退出按钮
+    SettingDlg *m_lpSettingDlg; // tray settings
 
 };
 

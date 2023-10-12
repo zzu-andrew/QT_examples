@@ -1,7 +1,7 @@
 //
 // Created by wangyz38535 on 2023/10/11.
 //
-
+#include <QDir>
 #include "spdlog_wrapper.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/cfg/env.h"  // support for loading levels from the environment variable
@@ -18,11 +18,12 @@ namespace spdlog
     void SpdlogInit(const char* name, const char* file_name, int h, int m, int lv, int flv)
     {
 #ifdef USE_SPDLOG_
-#ifdef Q_OS_WIN
-        mkdir("logs");
-#else
-        mkdir("logs", S_IRWXU);
-#endif
+        QString folderPath = "logs";
+        QDir dir;
+
+        if (!dir.exists(folderPath)) {
+            dir.mkpath(folderPath);
+        }
         auto console_sink = std::make_shared<sinks::stdout_color_sink_mt>();
         console_sink->set_level(static_cast<level::level_enum>(lv));
 
