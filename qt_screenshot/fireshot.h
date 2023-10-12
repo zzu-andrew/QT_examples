@@ -22,6 +22,12 @@ public:
 
     ~FireShot() override;
 
+private slots:
+    void OnStartShot();
+    void OnShotDone(Starter* starer);
+    void OnExitShot();
+    void OnShowSetting();
+
 private:
     QSystemTrayIcon* m_lpTrayIcon; // 放置一个系统托盘图标
     QMenu* m_lpTrayIconMenu;
@@ -29,6 +35,7 @@ private:
     QAction* m_lpShotAction;  // 截图按钮
     QAction* m_lpQuitAction; // 退出按钮
     SettingDlg *m_lpSettingDlg; // tray settings
+    bool m_bShotting; //
 
 };
 

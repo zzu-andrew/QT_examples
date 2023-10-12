@@ -16,7 +16,8 @@
 FireShot::FireShot(QWidget *parent) :
     QDialog(parent), m_lpTrayIcon(new QSystemTrayIcon(this)),
     m_lpTrayIconMenu(new QMenu(this)),
-    m_lpSettingDlg(new SettingDlg(this)) {
+    m_lpSettingDlg(new SettingDlg(this),
+    m_bShotting(false)) {
 
 }
 
@@ -46,7 +47,7 @@ int32_t FireShot::CreateActions() {
     m_lpSettingAction = new QAction(tr("&Settings"), this);
     QIcon settingIcon(":/icons/icon/menu-setting.png");
     m_lpSettingAction->setIcon(settingIcon);
-    connect(m_lpSettingAction, SIGNAL(triggered()), this, SLOT(OnShowSetting));
+    connect(m_lpSettingAction, &QAction::triggered, this, &FireShot::OnShowSetting);
     // construct tray shot icon
     m_lpShotAction = new QAction(tr("S$hot"), this);
     QIcon shotIcon(":/icons/icon/menu-shot.png");
@@ -60,5 +61,14 @@ int32_t FireShot::CreateActions() {
     ; // 退出按钮
 
     return 0;
+}
+
+void FireShot::OnStartShot() {
+    if (m_bShotting) {
+        // It is not allowed to cut two pictures at the same time
+        return;
+    }
+
+
 }
 
