@@ -1,22 +1,21 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#include <QSystemTrayIcon>
 
-#include <QMainWindow>
+#pragma once
 
-namespace Ui {
-class MainWindow;
-}
+class QAction;
 
-class MainWindow : public QMainWindow
+class TrayIcon : public QSystemTrayIcon
 {
     Q_OBJECT
-
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    explicit TrayIcon(QObject* parent);
+    ~TrayIcon() override = default;
+
 
 private:
-    Ui::MainWindow *ui;
-};
+    void initMenu();
 
-#endif // MAINWINDOW_H
+    static void startGuiCapture();
+
+    QMenu* m_menu;
+};
