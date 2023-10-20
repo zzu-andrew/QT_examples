@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/iamge">
+        <file>tv.png</file>
+        <file>fire.png</file>
+    </qresource>
+</RCC>
