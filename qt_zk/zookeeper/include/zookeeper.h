@@ -32,6 +32,10 @@
 #include <ws2tcpip.h> /* for struct sock_addr and socklen_t */
 #endif
 
+#ifdef HAVE_OPENSSL_H
+#include <openssl/ossl_typ.h>
+#endif
+
 #include <stdio.h>
 #include <ctype.h>
 
@@ -83,54 +87,57 @@
 
 /** zookeeper return constants **/
 
-enum ZOO_ERRORS {
-  ZOK = 0, /*!< Everything is OK */
+enum ZOO_ERRORS
+{
+    ZOK = 0, /*!< Everything is OK */
 
-  /** System and server-side errors.
-   * This is never thrown by the server, it shouldn't be used other than
-   * to indicate a range. Specifically error codes greater than this
-   * value, but lesser than {@link #ZAPIERROR}, are system errors. */
-  ZSYSTEMERROR = -1,
-  ZRUNTIMEINCONSISTENCY = -2, /*!< A runtime inconsistency was found */
-  ZDATAINCONSISTENCY = -3, /*!< A data inconsistency was found */
-  ZCONNECTIONLOSS = -4, /*!< Connection to the server has been lost */
-  ZMARSHALLINGERROR = -5, /*!< Error while marshalling or unmarshalling data */
-  ZUNIMPLEMENTED = -6, /*!< Operation is unimplemented */
-  ZOPERATIONTIMEOUT = -7, /*!< Operation timeout */
-  ZBADARGUMENTS = -8, /*!< Invalid arguments */
-  ZINVALIDSTATE = -9, /*!< Invliad zhandle state */
-  ZNEWCONFIGNOQUORUM = -13, /*!< No quorum of new config is connected and
+    /** System and server-side errors.
+     * This is never thrown by the server, it shouldn't be used other than
+     * to indicate a range. Specifically error codes greater than this
+     * value, but lesser than {@link #ZAPIERROR}, are system errors. */
+    ZSYSTEMERROR = -1,
+    ZRUNTIMEINCONSISTENCY = -2, /*!< A runtime inconsistency was found */
+    ZDATAINCONSISTENCY = -3, /*!< A data inconsistency was found */
+    ZCONNECTIONLOSS = -4, /*!< Connection to the server has been lost */
+    ZMARSHALLINGERROR = -5, /*!< Error while marshalling or unmarshalling data */
+    ZUNIMPLEMENTED = -6, /*!< Operation is unimplemented */
+    ZOPERATIONTIMEOUT = -7, /*!< Operation timeout */
+    ZBADARGUMENTS = -8, /*!< Invalid arguments */
+    ZINVALIDSTATE = -9, /*!< Invliad zhandle state */
+    ZNEWCONFIGNOQUORUM = -13, /*!< No quorum of new config is connected and
                                  up-to-date with the leader of last commmitted
                                  config - try invoking reconfiguration after new
                                  servers are connected and synced */
-  ZRECONFIGINPROGRESS = -14, /*!< Reconfiguration requested while another
+    ZRECONFIGINPROGRESS = -14, /*!< Reconfiguration requested while another
                                   reconfiguration is currently in progress. This
                                   is currently not supported. Please retry. */
+    ZSSLCONNECTIONERROR = -15, /*!< The SSL connection Error */
 
-  /** API errors.
-   * This is never thrown by the server, it shouldn't be used other than
-   * to indicate a range. Specifically error codes greater than this
-   * value are API errors (while values less than this indicate a
-   * {@link #ZSYSTEMERROR}).
-   */
-  ZAPIERROR = -100,
-  ZNONODE = -101, /*!< Node does not exist */
-  ZNOAUTH = -102, /*!< Not authenticated */
-  ZBADVERSION = -103, /*!< Version conflict */
-  ZNOCHILDRENFOREPHEMERALS = -108, /*!< Ephemeral nodes may not have children */
-  ZNODEEXISTS = -110, /*!< The node already exists */
-  ZNOTEMPTY = -111, /*!< The node has children */
-  ZSESSIONEXPIRED = -112, /*!< The session has been expired by the server */
-  ZINVALIDCALLBACK = -113, /*!< Invalid callback specified */
-  ZINVALIDACL = -114, /*!< Invalid ACL specified */
-  ZAUTHFAILED = -115, /*!< Client authentication failed */
-  ZCLOSING = -116, /*!< ZooKeeper is closing */
-  ZNOTHING = -117, /*!< (not error) no server responses to process */
-  ZSESSIONMOVED = -118, /*!<session moved to another server, so operation is ignored */
-  ZNOTREADONLY = -119, /*!< state-changing request is passed to read-only server */
-  ZEPHEMERALONLOCALSESSION = -120, /*!< Attempt to create ephemeral node on a local session */
-  ZNOWATCHER = -121, /*!< The watcher couldn't be found */
-  ZRECONFIGDISABLED = -123 /*!< Attempts to perform a reconfiguration operation when reconfiguration feature is disabled */
+    /** API errors.
+     * This is never thrown by the server, it shouldn't be used other than
+     * to indicate a range. Specifically error codes greater than this
+     * value are API errors (while values less than this indicate a
+     * {@link #ZSYSTEMERROR}).
+     */
+    ZAPIERROR = -100,
+    ZNONODE = -101, /*!< Node does not exist */
+    ZNOAUTH = -102, /*!< Not authenticated */
+    ZBADVERSION = -103, /*!< Version conflict */
+    ZNOCHILDRENFOREPHEMERALS = -108, /*!< Ephemeral nodes may not have children */
+    ZNODEEXISTS = -110, /*!< The node already exists */
+    ZNOTEMPTY = -111, /*!< The node has children */
+    ZSESSIONEXPIRED = -112, /*!< The session has been expired by the server */
+    ZINVALIDCALLBACK = -113, /*!< Invalid callback specified */
+    ZINVALIDACL = -114, /*!< Invalid ACL specified */
+    ZAUTHFAILED = -115, /*!< Client authentication failed */
+    ZCLOSING = -116, /*!< ZooKeeper is closing */
+    ZNOTHING = -117, /*!< (not error) no server responses to process */
+    ZSESSIONMOVED = -118, /*!<session moved to another server, so operation is ignored */
+    ZNOTREADONLY = -119, /*!< state-changing request is passed to read-only server */
+    ZEPHEMERALONLOCALSESSION = -120, /*!< Attempt to create ephemeral node on a local session */
+    ZNOWATCHER = -121, /*!< The watcher couldn't be found */
+    ZRECONFIGDISABLED = -123, /*!< Attempts to perform a reconfiguration operation when reconfiguration feature is disabled */
+    ZSESSIONCLOSEDREQUIRESASLAUTH = -124 /*!< The session has been closed by server because server requires client to do SASL authentication, but client is not configured with SASL authentication or configuted with SASL but failed (i.e. wrong credential used.). */
 };
 
 #ifdef __cplusplus
@@ -140,7 +147,7 @@ extern "C" {
 /**
 *  @name Debug levels
 */
-typedef enum {ZOO_LOG_LEVEL_ERROR=1,ZOO_LOG_LEVEL_WARN=2,ZOO_LOG_LEVEL_INFO=3,ZOO_LOG_LEVEL_DEBUG=4} ZooLogLevel;
+typedef enum {ZOO_LOG_LEVEL_ERROR = 1, ZOO_LOG_LEVEL_WARN = 2, ZOO_LOG_LEVEL_INFO = 3, ZOO_LOG_LEVEL_DEBUG = 4} ZooLogLevel;
 
 /**
  * @name ACL Consts
@@ -157,6 +164,9 @@ extern ZOOAPI const int ZOO_PERM_ALL;
 
 /* flags for zookeeper_init{,2} */
 #define ZOO_READONLY         1
+
+/** Disable logging of the client environment at initialization time. */
+#define ZOO_NO_LOG_CLIENTENV 2
 
 /** This Id represents anyone. */
 extern ZOOAPI struct Id ZOO_ANYONE_ID_UNSAFE;
@@ -281,13 +291,44 @@ extern ZOOAPI const int ZOO_NOTWATCHING_EVENT;
 typedef struct _zhandle zhandle_t;
 
 /**
+ * This structure represents the certificates to zookeeper.
+ */
+typedef struct _zcert
+{
+    char* certstr;
+    char* ca;
+    char* cert;
+    char* key;
+    char* passwd;
+} zcert_t;
+
+/**
+ * This structure represents the socket to zookeeper.
+ */
+typedef struct _zsock
+{
+#ifdef WIN32
+    SOCKET sock;
+#else
+    int sock;
+#endif
+    zcert_t* cert;
+#ifdef HAVE_OPENSSL_H
+    SSL* ssl_sock;
+    SSL_CTX* ssl_ctx;
+#endif
+} zsock_t;
+
+
+/**
  * \brief client id structure.
  *
  * This structure holds the id and password for the session. This structure
  * should be treated as opaque. It is received from the server when a session
  * is established and needs to be sent back as-is when reconnecting a session.
  */
-typedef struct {
+typedef struct
+{
     int64_t client_id;
     char passwd[16];
 } clientid_t;
@@ -301,39 +342,45 @@ typedef struct {
  * \ref zoo_create_op_init, \ref zoo_delete_op_init, \ref zoo_set_op_init
  * and \ref zoo_check_op_init.
  */
-typedef struct zoo_op {
+typedef struct zoo_op
+{
     int type;
-    union {
+    union
+    {
         // CREATE
-        struct {
-            const char *path;
-            const char *data;
+        struct
+        {
+            const char* path;
+            const char* data;
             int datalen;
-	        char *buf;
+            char* buf;
             int buflen;
-            const struct ACL_vector *acl;
+            const struct ACL_vector* acl;
             int flags;
             int64_t ttl;
         } create_op;
 
         // DELETE
-        struct {
-            const char *path;
+        struct
+        {
+            const char* path;
             int version;
         } delete_op;
 
         // SET
-        struct {
-            const char *path;
-            const char *data;
+        struct
+        {
+            const char* path;
+            const char* data;
             int datalen;
             int version;
-            struct Stat *stat;
+            struct Stat* stat;
         } set_op;
 
         // CHECK
-        struct {
-            const char *path;
+        struct
+        {
+            const char* path;
             int version;
         } check_op;
     };
@@ -362,9 +409,9 @@ typedef struct zoo_op {
  *    new node in the server will not be affected by the truncation.
  *    The path string will always be null-terminated.
  */
-void zoo_create_op_init(zoo_op_t *op, const char *path, const char *value,
-        int valuelen,  const struct ACL_vector *acl, int mode,
-        char *path_buffer, int path_buffer_len);
+void zoo_create_op_init(zoo_op_t* op, const char* path, const char* value,
+                        int valuelen,  const struct ACL_vector* acl, int mode,
+                        char* path_buffer, int path_buffer_len);
 
 /**
  * \brief zoo_delete_op_init.
@@ -378,7 +425,7 @@ void zoo_create_op_init(zoo_op_t *op, const char *path, const char *value,
  *    actual version of the node does not match the expected version.
  *  If -1 is used the version check will not take place.
  */
-void zoo_delete_op_init(zoo_op_t *op, const char *path, int version);
+void zoo_delete_op_init(zoo_op_t* op, const char* path, int version);
 
 /**
  * \brief zoo_set_op_init.
@@ -395,8 +442,8 @@ void zoo_delete_op_init(zoo_op_t *op, const char *path, int version);
  * the actual version of the node does not match the expected version. If -1 is
  * used the version check will not take place.
  */
-void zoo_set_op_init(zoo_op_t *op, const char *path, const char *buffer,
-        int buflen, int version, struct Stat *stat);
+void zoo_set_op_init(zoo_op_t* op, const char* path, const char* buffer,
+                     int buflen, int version, struct Stat* stat);
 
 /**
  * \brief zoo_check_op_init.
@@ -409,7 +456,7 @@ void zoo_set_op_init(zoo_op_t *op, const char *path, const char *buffer,
  * \param version the expected version of the node. The function will fail if the
  *    actual version of the node does not match the expected version.
  */
-void zoo_check_op_init(zoo_op_t *op, const char *path, int version);
+void zoo_check_op_init(zoo_op_t* op, const char* path, int version);
 
 /**
  * \brief zoo_op_result structure.
@@ -417,11 +464,12 @@ void zoo_check_op_init(zoo_op_t *op, const char *path, int version);
  * This structure holds the result for an op submitted as part of a multi_op
  * via \ref zoo_multi or \ref zoo_amulti.
  */
-typedef struct zoo_op_result {
+typedef struct zoo_op_result
+{
     int err;
-    char *value;
-	int valuelen;
-    struct Stat *stat;
+    char* value;
+    int valuelen;
+    struct Stat* stat;
 } zoo_op_result_t;
 
 /**
@@ -450,8 +498,8 @@ typedef struct zoo_op_result {
  * type is ZOO_SESSION_EVENT
  * \param watcherCtx watcher context.
  */
-typedef void (*watcher_fn)(zhandle_t *zh, int type,
-        int state, const char *path,void *watcherCtx);
+typedef void (*watcher_fn)(zhandle_t* zh, int type,
+                           int state, const char* path, void* watcherCtx);
 
 /**
  * \brief typedef for setting the log callback. It's a function pointer which
@@ -459,7 +507,7 @@ typedef void (*watcher_fn)(zhandle_t *zh, int type,
  *
  * \param message message to be passed to the callback function.
  */
-typedef void (*log_callback_fn)(const char *message);
+typedef void (*log_callback_fn)(const char* message);
 
 /**
  * \brief create a handle to used communicate with zookeeper.
@@ -489,8 +537,15 @@ typedef void (*log_callback_fn)(const char *message);
  * a new zhandle the function returns NULL and the errno variable
  * indicates the reason.
  */
-ZOOAPI zhandle_t *zookeeper_init(const char *host, watcher_fn fn,
-  int recv_timeout, const clientid_t *clientid, void *context, int flags);
+ZOOAPI zhandle_t* zookeeper_init(const char* host, watcher_fn fn,
+                                 int recv_timeout, const clientid_t* clientid, void* context, int flags);
+
+#ifdef HAVE_OPENSSL_H
+ZOOAPI zhandle_t* zookeeper_init_ssl(const char* host, const char* cert, watcher_fn fn,
+                                     int recv_timeout, const clientid_t* clientid, void* context, int flags);
+#endif
+
+ZOOAPI void close_zsock(zsock_t* zsock);
 
 /**
  * \brief create a handle to communicate with zookeeper.
@@ -527,9 +582,9 @@ ZOOAPI zhandle_t *zookeeper_init(const char *host, watcher_fn fn,
  * a new zhandle the function returns NULL and the errno variable
  * indicates the reason.
  */
-ZOOAPI zhandle_t *zookeeper_init2(const char *host, watcher_fn fn,
-  int recv_timeout, const clientid_t *clientid, void *context, int flags,
-  log_callback_fn log_callback);
+ZOOAPI zhandle_t* zookeeper_init2(const char* host, watcher_fn fn,
+                                  int recv_timeout, const clientid_t* clientid, void* context, int flags,
+                                  log_callback_fn log_callback);
 
 /**
  * \brief update the list of servers this client will connect to.
@@ -561,7 +616,7 @@ ZOOAPI zhandle_t *zookeeper_init2(const char *host, watcher_fn fn,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZSYSTEMERROR -- a system (OS) error occured; it's worth checking errno to get details
  */
-ZOOAPI int zoo_set_servers(zhandle_t *zh, const char *hosts);
+ZOOAPI int zoo_set_servers(zhandle_t* zh, const char* hosts);
 
 /**
  * \brief cycle to the next server on the next connection attempt.
@@ -574,7 +629,7 @@ ZOOAPI int zoo_set_servers(zhandle_t *zh, const char *hosts);
  * to allow testing changing servers on the fly and the probabilistic load
  * balancing algorithm.
  */
-ZOOAPI void zoo_cycle_next_server(zhandle_t *zh);
+ZOOAPI void zoo_cycle_next_server(zhandle_t* zh);
 
 /**
  * \brief get current host:port this client is connecting/connected to.
@@ -610,44 +665,44 @@ ZOOAPI const char* zoo_get_current_server(zhandle_t* zh);
  * ZCONNECTIONLOSS - a network error occurred while attempting to send request to server
  * ZSYSTEMERROR -- a system (OS) error occurred; it's worth checking errno to get details
  */
-ZOOAPI int zookeeper_close(zhandle_t *zh);
+ZOOAPI int zookeeper_close(zhandle_t* zh);
 
 /**
  * \brief return the client session id, only valid if the connections
  * is currently connected (ie. last watcher state is ZOO_CONNECTED_STATE)
  */
-ZOOAPI const clientid_t *zoo_client_id(zhandle_t *zh);
+ZOOAPI const clientid_t* zoo_client_id(zhandle_t* zh);
 
 /**
  * \brief return the timeout for this session, only valid if the connections
  * is currently connected (ie. last watcher state is ZOO_CONNECTED_STATE). This
  * value may change after a server re-connect.
  */
-ZOOAPI int zoo_recv_timeout(zhandle_t *zh);
+ZOOAPI int zoo_recv_timeout(zhandle_t* zh);
 
 /**
  * \brief return the context for this handle.
  */
-ZOOAPI const void *zoo_get_context(zhandle_t *zh);
+ZOOAPI const void* zoo_get_context(zhandle_t* zh);
 
 /**
  * \brief set the context for this handle.
  */
-ZOOAPI void zoo_set_context(zhandle_t *zh, void *context);
+ZOOAPI void zoo_set_context(zhandle_t* zh, void* context);
 
 /**
  * \brief set a watcher function
  * \return previous watcher function
  */
-ZOOAPI watcher_fn zoo_set_watcher(zhandle_t *zh,watcher_fn newFn);
+ZOOAPI watcher_fn zoo_set_watcher(zhandle_t* zh, watcher_fn newFn);
 
 /**
  * \brief returns the socket address for the current connection
  * \return socket address of the connected host or NULL on failure, only valid if the
  * connection is current connected
  */
-ZOOAPI struct sockaddr* zookeeper_get_connected_host(zhandle_t *zh,
-        struct sockaddr *addr, socklen_t *addr_len);
+ZOOAPI struct sockaddr* zookeeper_get_connected_host(zhandle_t* zh,
+        struct sockaddr* addr, socklen_t* addr_len);
 
 #ifndef THREADED
 /**
@@ -670,11 +725,11 @@ ZOOAPI struct sockaddr* zookeeper_get_connected_host(zhandle_t *zh,
  * ZSYSTEMERROR -- a system (OS) error occurred; it's worth checking errno to get details
  */
 #ifdef WIN32
-ZOOAPI int zookeeper_interest(zhandle_t *zh, SOCKET *fd, int *interest,
-	struct timeval *tv);
+ZOOAPI int zookeeper_interest(zhandle_t* zh, SOCKET* fd, int* interest,
+                              struct timeval* tv);
 #else
-ZOOAPI int zookeeper_interest(zhandle_t *zh, int *fd, int *interest,
-	struct timeval *tv);
+ZOOAPI int zookeeper_interest(zhandle_t* zh, int* fd, int* interest,
+                              struct timeval* tv);
 #endif
 
 /**
@@ -694,7 +749,7 @@ ZOOAPI int zookeeper_interest(zhandle_t *zh, int *fd, int *interest,
  * ZNOTHING -- not an error; simply indicates that there no more data from the server
  *              to be processed (when called with ZOOKEEPER_READ flag).
  */
-ZOOAPI int zookeeper_process(zhandle_t *zh, int events);
+ZOOAPI int zookeeper_process(zhandle_t* zh, int events);
 #endif
 
 /**
@@ -714,7 +769,7 @@ ZOOAPI int zookeeper_process(zhandle_t *zh, int events);
  *   is responsible for any memory freeing associated with the data
  *   pointer.
  */
-typedef void (*void_completion_t)(int rc, const void *data);
+typedef void (*void_completion_t)(int rc, const void* data);
 
 /**
  * \brief signature of a completion function that returns a Stat structure.
@@ -736,8 +791,8 @@ typedef void (*void_completion_t)(int rc, const void *data);
  *   is responsible for any memory freeing associated with the data
  *   pointer.
  */
-typedef void (*stat_completion_t)(int rc, const struct Stat *stat,
-        const void *data);
+typedef void (*stat_completion_t)(int rc, const struct Stat* stat,
+                                  const void* data);
 
 /**
  * \brief signature of a completion function that returns data.
@@ -763,8 +818,8 @@ typedef void (*stat_completion_t)(int rc, const struct Stat *stat,
  *   is responsible for any memory freeing associated with the data
  *   pointer.
  */
-typedef void (*data_completion_t)(int rc, const char *value, int value_len,
-        const struct Stat *stat, const void *data);
+typedef void (*data_completion_t)(int rc, const char* value, int value_len,
+                                  const struct Stat* stat, const void* data);
 
 /**
  * \brief signature of a completion function that returns a list of strings.
@@ -788,7 +843,7 @@ typedef void (*data_completion_t)(int rc, const char *value, int value_len,
  *   pointer.
  */
 typedef void (*strings_completion_t)(int rc,
-        const struct String_vector *strings, const void *data);
+                                     const struct String_vector* strings, const void* data);
 
 /**
  * \brief signature of a completion function that returns a string and stat.
@@ -813,7 +868,7 @@ typedef void (*strings_completion_t)(int rc,
  *   pointer.
  */
 typedef void (*string_stat_completion_t)(int rc,
-        const char *string, const struct Stat *stat, const void *data);
+        const char* string, const struct Stat* stat, const void* data);
 
 /**
  * \brief signature of a completion function that returns a list of strings and stat.
@@ -841,8 +896,8 @@ typedef void (*string_stat_completion_t)(int rc,
  *   pointer.
  */
 typedef void (*strings_stat_completion_t)(int rc,
-        const struct String_vector *strings, const struct Stat *stat,
-        const void *data);
+        const struct String_vector* strings, const struct Stat* stat,
+        const void* data);
 
 /**
  * \brief signature of a completion function that returns a list of strings.
@@ -863,7 +918,7 @@ typedef void (*strings_stat_completion_t)(int rc,
  *   pointer.
  */
 typedef void
-        (*string_completion_t)(int rc, const char *value, const void *data);
+(*string_completion_t)(int rc, const char* value, const void* data);
 
 /**
  * \brief signature of a completion function that returns an ACL.
@@ -888,15 +943,15 @@ typedef void
  *   is responsible for any memory freeing associated with the data
  *   pointer.
  */
-typedef void (*acl_completion_t)(int rc, struct ACL_vector *acl,
-        struct Stat *stat, const void *data);
+typedef void (*acl_completion_t)(int rc, struct ACL_vector* acl,
+                                 struct Stat* stat, const void* data);
 
 /**
  * \brief get the state of the zookeeper connection.
  *
  * The return value will be one of the \ref State Consts.
  */
-ZOOAPI int zoo_state(zhandle_t *zh);
+ZOOAPI int zoo_state(zhandle_t* zh);
 
 /**
  * \brief create a node.
@@ -923,16 +978,16 @@ ZOOAPI int zoo_state(zhandle_t *zh);
  * ZNODEEXISTS the node already exists
  * ZNOAUTH the client does not have permission.
  * ZNOCHILDRENFOREPHEMERALS cannot create children of ephemeral nodes.
- * \param data The data that will be passed to the completion routine when the 
+ * \param data The data that will be passed to the completion routine when the
  * function completes.
  * \return ZOK on success or one of the following errcodes on failure:
  * ZBADARGUMENTS - invalid input parameters
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_acreate(zhandle_t *zh, const char *path, const char *value, 
-        int valuelen, const struct ACL_vector *acl, int mode,
-        string_completion_t completion, const void *data);
+ZOOAPI int zoo_acreate(zhandle_t* zh, const char* path, const char* value,
+                       int valuelen, const struct ACL_vector* acl, int mode,
+                       string_completion_t completion, const void* data);
 
 /**
  * \brief create a node.
@@ -969,9 +1024,9 @@ ZOOAPI int zoo_acreate(zhandle_t *zh, const char *path, const char *value,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_acreate_ttl(zhandle_t *zh, const char *path, const char *value,
-        int valuelen, const struct ACL_vector *acl, int mode, int64_t ttl,
-        string_completion_t completion, const void *data);
+ZOOAPI int zoo_acreate_ttl(zhandle_t* zh, const char* path, const char* value,
+                           int valuelen, const struct ACL_vector* acl, int mode, int64_t ttl,
+                           string_completion_t completion, const void* data);
 
 /**
  * \brief create a node asynchronously and returns stat details.
@@ -1005,9 +1060,9 @@ ZOOAPI int zoo_acreate_ttl(zhandle_t *zh, const char *path, const char *value,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_acreate2(zhandle_t *zh, const char *path, const char *value,
-        int valuelen, const struct ACL_vector *acl, int mode,
-        string_stat_completion_t completion, const void *data);
+ZOOAPI int zoo_acreate2(zhandle_t* zh, const char* path, const char* value,
+                        int valuelen, const struct ACL_vector* acl, int mode,
+                        string_stat_completion_t completion, const void* data);
 
 /**
  * \brief create a node asynchronously and returns stat details.
@@ -1044,19 +1099,19 @@ ZOOAPI int zoo_acreate2(zhandle_t *zh, const char *path, const char *value,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_acreate2_ttl(zhandle_t *zh, const char *path, const char *value,
-        int valuelen, const struct ACL_vector *acl, int mode, int64_t ttl,
-        string_stat_completion_t completion, const void *data);
+ZOOAPI int zoo_acreate2_ttl(zhandle_t* zh, const char* path, const char* value,
+                            int valuelen, const struct ACL_vector* acl, int mode, int64_t ttl,
+                            string_stat_completion_t completion, const void* data);
 
 /**
  * \brief delete a node in zookeeper.
- * 
+ *
  * \param zh the zookeeper handle obtained by a call to \ref zookeeper_init
- * \param path the name of the node. Expressed as a file name with slashes 
+ * \param path the name of the node. Expressed as a file name with slashes
  * separating ancestors of the node.
  * \param version the expected version of the node. The function will fail if the
  *    actual version of the node does not match the expected version.
- *  If -1 is used the version check will not take place. 
+ *  If -1 is used the version check will not take place.
  * \param completion the routine to invoke when the request completes. The completion
  * will be triggered with one of the following codes passed in as the rc argument:
  * ZOK operation completed successfully
@@ -1071,8 +1126,8 @@ ZOOAPI int zoo_acreate2_ttl(zhandle_t *zh, const char *path, const char *value,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_adelete(zhandle_t *zh, const char *path, int version,
-        void_completion_t completion, const void *data);
+ZOOAPI int zoo_adelete(zhandle_t* zh, const char* path, int version,
+                       void_completion_t completion, const void* data);
 
 /**
  * \brief checks the existence of a node in zookeeper.
@@ -1095,8 +1150,8 @@ ZOOAPI int zoo_adelete(zhandle_t *zh, const char *path, int version,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_aexists(zhandle_t *zh, const char *path, int watch,
-        stat_completion_t completion, const void *data);
+ZOOAPI int zoo_aexists(zhandle_t* zh, const char* path, int watch,
+                       stat_completion_t completion, const void* data);
 
 /**
  * \brief checks the existence of a node in zookeeper.
@@ -1127,9 +1182,9 @@ ZOOAPI int zoo_aexists(zhandle_t *zh, const char *path, int watch,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_awexists(zhandle_t *zh, const char *path,
-        watcher_fn watcher, void* watcherCtx,
-        stat_completion_t completion, const void *data);
+ZOOAPI int zoo_awexists(zhandle_t* zh, const char* path,
+                        watcher_fn watcher, void* watcherCtx,
+                        stat_completion_t completion, const void* data);
 
 /**
  * \brief gets the data associated with a node.
@@ -1151,8 +1206,8 @@ ZOOAPI int zoo_awexists(zhandle_t *zh, const char *path,
  * ZINVALIDSTATE - zhandle state is either in ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_aget(zhandle_t *zh, const char *path, int watch,
-        data_completion_t completion, const void *data);
+ZOOAPI int zoo_aget(zhandle_t* zh, const char* path, int watch,
+                    data_completion_t completion, const void* data);
 
 /**
  * \brief gets the data associated with a node.
@@ -1180,9 +1235,9 @@ ZOOAPI int zoo_aget(zhandle_t *zh, const char *path, int watch,
  * ZINVALIDSTATE - zhandle state is either in ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_awget(zhandle_t *zh, const char *path,
-        watcher_fn watcher, void* watcherCtx,
-        data_completion_t completion, const void *data);
+ZOOAPI int zoo_awget(zhandle_t* zh, const char* path,
+                     watcher_fn watcher, void* watcherCtx,
+                     data_completion_t completion, const void* data);
 
 /**
  * \brief gets the last committed configuration of the ZooKeeper cluster as it is known to
@@ -1203,8 +1258,8 @@ ZOOAPI int zoo_awget(zhandle_t *zh, const char *path,
  * ZINVALIDSTATE - zhandle state is either in ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_agetconfig(zhandle_t *zh, int watch,
-        data_completion_t completion, const void *data);
+ZOOAPI int zoo_agetconfig(zhandle_t* zh, int watch,
+                          data_completion_t completion, const void* data);
 
 /**
  * \brief gets the last committed configuration of the ZooKeeper cluster as it is known to
@@ -1231,8 +1286,8 @@ ZOOAPI int zoo_agetconfig(zhandle_t *zh, int watch,
  * ZINVALIDSTATE - zhandle state is either in ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_awgetconfig(zhandle_t *zh, watcher_fn watcher, void* watcherCtx,
-        data_completion_t completion, const void *data);
+ZOOAPI int zoo_awgetconfig(zhandle_t* zh, watcher_fn watcher, void* watcherCtx,
+                           data_completion_t completion, const void* data);
 
 /**
  * \brief asynchronous reconfiguration interface - allows changing ZK cluster
@@ -1267,8 +1322,8 @@ ZOOAPI int zoo_awgetconfig(zhandle_t *zh, watcher_fn watcher, void* watcherCtx,
  * the leader of last committed config - try invoking reconfiguration after new servers are connected and synced
  * ZRECONFIGINPROGRESS - another reconfig is currently in progress
  */
-ZOOAPI int zoo_areconfig(zhandle_t *zh, const char *joining, const char *leaving,
-       const char *members, int64_t version, data_completion_t dc, const void *data);
+ZOOAPI int zoo_areconfig(zhandle_t* zh, const char* joining, const char* leaving,
+                         const char* members, int64_t version, data_completion_t dc, const void* data);
 
 /**
  * \brief sets the data associated with a node.
@@ -1296,8 +1351,8 @@ ZOOAPI int zoo_areconfig(zhandle_t *zh, const char *joining, const char *leaving
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_aset(zhandle_t *zh, const char *path, const char *buffer, int buflen,
-        int version, stat_completion_t completion, const void *data);
+ZOOAPI int zoo_aset(zhandle_t* zh, const char* path, const char* buffer, int buflen,
+                    int version, stat_completion_t completion, const void* data);
 
 /**
  * \brief lists the children of a node.
@@ -1319,8 +1374,8 @@ ZOOAPI int zoo_aset(zhandle_t *zh, const char *path, const char *buffer, int buf
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_aget_children(zhandle_t *zh, const char *path, int watch,
-        strings_completion_t completion, const void *data);
+ZOOAPI int zoo_aget_children(zhandle_t* zh, const char* path, int watch,
+                             strings_completion_t completion, const void* data);
 
 /**
  * \brief lists the children of a node.
@@ -1348,9 +1403,9 @@ ZOOAPI int zoo_aget_children(zhandle_t *zh, const char *path, int watch,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_awget_children(zhandle_t *zh, const char *path,
-        watcher_fn watcher, void* watcherCtx,
-        strings_completion_t completion, const void *data);
+ZOOAPI int zoo_awget_children(zhandle_t* zh, const char* path,
+                              watcher_fn watcher, void* watcherCtx,
+                              strings_completion_t completion, const void* data);
 
 /**
  * \brief lists the children of a node, and get the parent stat.
@@ -1374,8 +1429,8 @@ ZOOAPI int zoo_awget_children(zhandle_t *zh, const char *path,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_aget_children2(zhandle_t *zh, const char *path, int watch,
-        strings_stat_completion_t completion, const void *data);
+ZOOAPI int zoo_aget_children2(zhandle_t* zh, const char* path, int watch,
+                              strings_stat_completion_t completion, const void* data);
 
 /**
  * \brief lists the children of a node, and get the parent stat.
@@ -1405,9 +1460,9 @@ ZOOAPI int zoo_aget_children2(zhandle_t *zh, const char *path, int watch,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_awget_children2(zhandle_t *zh, const char *path,
-        watcher_fn watcher, void* watcherCtx,
-        strings_stat_completion_t completion, const void *data);
+ZOOAPI int zoo_awget_children2(zhandle_t* zh, const char* path,
+                               watcher_fn watcher, void* watcherCtx,
+                               strings_stat_completion_t completion, const void* data);
 
 /**
  * \brief Flush leader channel.
@@ -1428,8 +1483,8 @@ ZOOAPI int zoo_awget_children2(zhandle_t *zh, const char *path,
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
 
-ZOOAPI int zoo_async(zhandle_t *zh, const char *path,
-        string_completion_t completion, const void *data);
+ZOOAPI int zoo_async(zhandle_t* zh, const char* path,
+                     string_completion_t completion, const void* data);
 
 
 /**
@@ -1450,8 +1505,8 @@ ZOOAPI int zoo_async(zhandle_t *zh, const char *path,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_aget_acl(zhandle_t *zh, const char *path, acl_completion_t completion,
-        const void *data);
+ZOOAPI int zoo_aget_acl(zhandle_t* zh, const char* path, acl_completion_t completion,
+                        const void* data);
 
 /**
  * \brief sets the acl associated with a node.
@@ -1475,8 +1530,8 @@ ZOOAPI int zoo_aget_acl(zhandle_t *zh, const char *path, acl_completion_t comple
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_aset_acl(zhandle_t *zh, const char *path, int version,
-        struct ACL_vector *acl, void_completion_t, const void *data);
+ZOOAPI int zoo_aset_acl(zhandle_t* zh, const char* path, int version,
+                        struct ACL_vector* acl, void_completion_t, const void* data);
 
 /**
  * \brief atomically commits multiple zookeeper operations.
@@ -1494,8 +1549,8 @@ ZOOAPI int zoo_aset_acl(zhandle_t *zh, const char *path, int version,
  * values that can be returned by the ops supported by a multi op (see
  * \ref zoo_acreate, \ref zoo_adelete, \ref zoo_aset).
  */
-ZOOAPI int zoo_amulti(zhandle_t *zh, int count, const zoo_op_t *ops,
-        zoo_op_result_t *results, void_completion_t, const void *data);
+ZOOAPI int zoo_amulti(zhandle_t* zh, int count, const zoo_op_t* ops,
+                      zoo_op_result_t* results, void_completion_t, const void* data);
 
 /**
  * \brief return an error string.
@@ -1532,8 +1587,8 @@ ZOOAPI const char* zerror(int c);
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  * ZSYSTEMERROR - a system error occurred
  */
-ZOOAPI int zoo_add_auth(zhandle_t *zh,const char* scheme,const char* cert,
-	int certLen, void_completion_t completion, const void *data);
+ZOOAPI int zoo_add_auth(zhandle_t* zh, const char* scheme, const char* cert,
+                        int certLen, void_completion_t completion, const void* data);
 
 /**
  * \brief checks if the current zookeeper connection state can't be recovered.
@@ -1543,7 +1598,7 @@ ZOOAPI int zoo_add_auth(zhandle_t *zh,const char* scheme,const char* cert,
  * \param zh the zookeeper handle (see \ref zookeeper_init)
  * \return ZINVALIDSTATE if connection is unrecoverable
  */
-ZOOAPI int is_unrecoverable(zhandle_t *zh);
+ZOOAPI int is_unrecoverable(zhandle_t* zh);
 
 /**
  * \brief sets the debugging level for the library
@@ -1569,7 +1624,7 @@ ZOOAPI void zoo_set_log_stream(FILE* logStream);
  * cause it to then fallback to using the logging stream as described in \ref
  * zoo_set_log_stream.
  */
-ZOOAPI log_callback_fn zoo_get_log_callback(const zhandle_t *zh);
+ZOOAPI log_callback_fn zoo_get_log_callback(const zhandle_t* zh);
 
 /**
  * \brief sets the callback to be used by the library for logging
@@ -1583,7 +1638,7 @@ ZOOAPI log_callback_fn zoo_get_log_callback(const zhandle_t *zh);
  * Note: The provided callback will be invoked by multiple threads and therefore
  * it needs to be thread-safe.
  */
-ZOOAPI void zoo_set_log_callback(zhandle_t *zh, log_callback_fn callback);
+ZOOAPI void zoo_set_log_callback(zhandle_t* zh, log_callback_fn callback);
 
 /**
  * \brief enable/disable quorum endpoint order randomization
@@ -1601,10 +1656,11 @@ ZOOAPI void zoo_deterministic_conn_order(int yesOrNo);
 /**
  * Type of watches: used to select which type of watches should be removed
  */
-typedef enum {
-  ZWATCHTYPE_CHILD = 1,
-  ZWATCHTYPE_DATA = 2,
-  ZWATCHTYPE_ANY = 3	
+typedef enum
+{
+    ZWATCHTYPE_CHILD = 1,
+    ZWATCHTYPE_DATA = 2,
+    ZWATCHTYPE_ANY = 3
 } ZooWatcherType;
 
 /**
@@ -1627,9 +1683,9 @@ typedef enum {
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  * ZSYSTEMERROR - a system error occured
  */
-ZOOAPI int zoo_aremove_watches(zhandle_t *zh, const char *path,
-        ZooWatcherType wtype, watcher_fn watcher, void *watcherCtx, int local,
-        void_completion_t *completion, const void *data);
+ZOOAPI int zoo_aremove_watches(zhandle_t* zh, const char* path,
+                               ZooWatcherType wtype, watcher_fn watcher, void* watcherCtx, int local,
+                               void_completion_t* completion, const void* data);
 
 /**
  * \brief removes all the watches for the given path and watcher type.
@@ -1648,8 +1704,8 @@ ZOOAPI int zoo_aremove_watches(zhandle_t *zh, const char *path,
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  * ZSYSTEMERROR - a system error occured
  */
-ZOOAPI int zoo_remove_all_watches(zhandle_t *zh, const char *path,
-        ZooWatcherType wtype, int local);
+ZOOAPI int zoo_remove_all_watches(zhandle_t* zh, const char* path,
+                                  ZooWatcherType wtype, int local);
 
 /**
  * \brief removes all the watches for the given path and watcher type.
@@ -1668,9 +1724,9 @@ ZOOAPI int zoo_remove_all_watches(zhandle_t *zh, const char *path,
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  * ZSYSTEMERROR - a system error occured
 */
-ZOOAPI int zoo_aremove_all_watches(zhandle_t *zh, const char *path,
-        ZooWatcherType wtype, int local, void_completion_t *completion,
-        const void *data);
+ZOOAPI int zoo_aremove_all_watches(zhandle_t* zh, const char* path,
+                                   ZooWatcherType wtype, int local, void_completion_t* completion,
+                                   const void* data);
 
 #ifdef THREADED
 /**
@@ -1711,9 +1767,9 @@ ZOOAPI int zoo_aremove_all_watches(zhandle_t *zh, const char *path,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_create(zhandle_t *zh, const char *path, const char *value,
-        int valuelen, const struct ACL_vector *acl, int mode,
-        char *path_buffer, int path_buffer_len);
+ZOOAPI int zoo_create(zhandle_t* zh, const char* path, const char* value,
+                      int valuelen, const struct ACL_vector* acl, int mode,
+                      char* path_buffer, int path_buffer_len);
 
 /**
  * \brief create a node synchronously.
@@ -1756,9 +1812,9 @@ ZOOAPI int zoo_create(zhandle_t *zh, const char *path, const char *value,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_create_ttl(zhandle_t *zh, const char *path, const char *value,
-        int valuelen, const struct ACL_vector *acl, int mode, int64_t ttl,
-        char *path_buffer, int path_buffer_len);
+ZOOAPI int zoo_create_ttl(zhandle_t* zh, const char* path, const char* value,
+                          int valuelen, const struct ACL_vector* acl, int mode, int64_t ttl,
+                          char* path_buffer, int path_buffer_len);
 
 /**
  * \brief create a node synchronously and collect stat details.
@@ -1799,9 +1855,9 @@ ZOOAPI int zoo_create_ttl(zhandle_t *zh, const char *path, const char *value,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_create2(zhandle_t *zh, const char *path, const char *value,
-        int valuelen, const struct ACL_vector *acl, int mode,
-        char *path_buffer, int path_buffer_len, struct Stat *stat);
+ZOOAPI int zoo_create2(zhandle_t* zh, const char* path, const char* value,
+                       int valuelen, const struct ACL_vector* acl, int mode,
+                       char* path_buffer, int path_buffer_len, struct Stat* stat);
 
 /**
  * \brief create a node synchronously and collect stat details.
@@ -1845,9 +1901,9 @@ ZOOAPI int zoo_create2(zhandle_t *zh, const char *path, const char *value,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_create2_ttl(zhandle_t *zh, const char *path, const char *value,
-        int valuelen, const struct ACL_vector *acl, int mode, int64_t ttl,
-        char *path_buffer, int path_buffer_len, struct Stat *stat);
+ZOOAPI int zoo_create2_ttl(zhandle_t* zh, const char* path, const char* value,
+                           int valuelen, const struct ACL_vector* acl, int mode, int64_t ttl,
+                           char* path_buffer, int path_buffer_len, struct Stat* stat);
 
 /**
  * \brief delete a node in zookeeper synchronously.
@@ -1868,7 +1924,7 @@ ZOOAPI int zoo_create2_ttl(zhandle_t *zh, const char *path, const char *value,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_delete(zhandle_t *zh, const char *path, int version);
+ZOOAPI int zoo_delete(zhandle_t* zh, const char* path, int version);
 
 /**
  * \brief checks the existence of a node in zookeeper synchronously.
@@ -1888,7 +1944,7 @@ ZOOAPI int zoo_delete(zhandle_t *zh, const char *path, int version);
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_exists(zhandle_t *zh, const char *path, int watch, struct Stat *stat);
+ZOOAPI int zoo_exists(zhandle_t* zh, const char* path, int watch, struct Stat* stat);
 
 /**
  * \brief checks the existence of a node in zookeeper synchronously.
@@ -1914,8 +1970,8 @@ ZOOAPI int zoo_exists(zhandle_t *zh, const char *path, int watch, struct Stat *s
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_wexists(zhandle_t *zh, const char *path,
-        watcher_fn watcher, void* watcherCtx, struct Stat *stat);
+ZOOAPI int zoo_wexists(zhandle_t* zh, const char* path,
+                       watcher_fn watcher, void* watcherCtx, struct Stat* stat);
 
 /**
  * \brief gets the data associated with a node synchronously.
@@ -1937,8 +1993,8 @@ ZOOAPI int zoo_wexists(zhandle_t *zh, const char *path,
  * ZINVALIDSTATE - zhandle state is either in ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_get(zhandle_t *zh, const char *path, int watch, char *buffer,
-                   int* buffer_len, struct Stat *stat);
+ZOOAPI int zoo_get(zhandle_t* zh, const char* path, int watch, char* buffer,
+                   int* buffer_len, struct Stat* stat);
 /**
  * \brief gets the data associated with a node synchronously.
  *
@@ -1965,9 +2021,9 @@ ZOOAPI int zoo_get(zhandle_t *zh, const char *path, int watch, char *buffer,
  * ZINVALIDSTATE - zhandle state is either in ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_wget(zhandle_t *zh, const char *path,
-        watcher_fn watcher, void* watcherCtx,
-        char *buffer, int* buffer_len, struct Stat *stat);
+ZOOAPI int zoo_wget(zhandle_t* zh, const char* path,
+                    watcher_fn watcher, void* watcherCtx,
+                    char* buffer, int* buffer_len, struct Stat* stat);
 
 /**
  * \brief gets the last committed configuration of the ZooKeeper cluster as it is known to
@@ -1988,8 +2044,8 @@ ZOOAPI int zoo_wget(zhandle_t *zh, const char *path,
  * ZINVALIDSTATE - zhandle state is either in ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_getconfig(zhandle_t *zh, int watch, char *buffer,
-                         int* buffer_len, struct Stat *stat);
+ZOOAPI int zoo_getconfig(zhandle_t* zh, int watch, char* buffer,
+                         int* buffer_len, struct Stat* stat);
 
 /**
  * \brief gets the last committed configuration of the ZooKeeper cluster as it is known to
@@ -2016,8 +2072,8 @@ ZOOAPI int zoo_getconfig(zhandle_t *zh, int watch, char *buffer,
  * ZINVALIDSTATE - zhandle state is either in ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_wgetconfig(zhandle_t *zh, watcher_fn watcher, void* watcherCtx,
-        char *buffer, int* buffer_len, struct Stat *stat);
+ZOOAPI int zoo_wgetconfig(zhandle_t* zh, watcher_fn watcher, void* watcherCtx,
+                          char* buffer, int* buffer_len, struct Stat* stat);
 
 /**
  * \brief synchronous reconfiguration interface - allows changing ZK cluster
@@ -2053,9 +2109,9 @@ ZOOAPI int zoo_wgetconfig(zhandle_t *zh, watcher_fn watcher, void* watcherCtx,
  * servers are connected and synced
  * ZRECONFIGINPROGRESS - another reconfig is currently in progress
  */
-ZOOAPI int zoo_reconfig(zhandle_t *zh, const char *joining, const char *leaving,
-       const char *members, int64_t version, char *buffer, int* buffer_len,
-       struct Stat *stat);
+ZOOAPI int zoo_reconfig(zhandle_t* zh, const char* joining, const char* leaving,
+                        const char* members, int64_t version, char* buffer, int* buffer_len,
+                        struct Stat* stat);
 
 /**
  * \brief sets the data associated with a node. See zoo_set2 function if
@@ -2079,7 +2135,7 @@ ZOOAPI int zoo_reconfig(zhandle_t *zh, const char *joining, const char *leaving,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_set(zhandle_t *zh, const char *path, const char *buffer,
+ZOOAPI int zoo_set(zhandle_t* zh, const char* path, const char* buffer,
                    int buflen, int version);
 
 /**
@@ -2106,8 +2162,8 @@ ZOOAPI int zoo_set(zhandle_t *zh, const char *path, const char *buffer,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_set2(zhandle_t *zh, const char *path, const char *buffer,
-                   int buflen, int version, struct Stat *stat);
+ZOOAPI int zoo_set2(zhandle_t* zh, const char* path, const char* buffer,
+                    int buflen, int version, struct Stat* stat);
 
 /**
  * \brief lists the children of a node synchronously.
@@ -2126,8 +2182,8 @@ ZOOAPI int zoo_set2(zhandle_t *zh, const char *path, const char *buffer,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_get_children(zhandle_t *zh, const char *path, int watch,
-                            struct String_vector *strings);
+ZOOAPI int zoo_get_children(zhandle_t* zh, const char* path, int watch,
+                            struct String_vector* strings);
 
 /**
  * \brief lists the children of a node synchronously.
@@ -2152,9 +2208,9 @@ ZOOAPI int zoo_get_children(zhandle_t *zh, const char *path, int watch,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_wget_children(zhandle_t *zh, const char *path,
-        watcher_fn watcher, void* watcherCtx,
-        struct String_vector *strings);
+ZOOAPI int zoo_wget_children(zhandle_t* zh, const char* path,
+                             watcher_fn watcher, void* watcherCtx,
+                             struct String_vector* strings);
 
 /**
  * \brief lists the children of a node and get its stat synchronously.
@@ -2176,8 +2232,8 @@ ZOOAPI int zoo_wget_children(zhandle_t *zh, const char *path,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_get_children2(zhandle_t *zh, const char *path, int watch,
-                            struct String_vector *strings, struct Stat *stat);
+ZOOAPI int zoo_get_children2(zhandle_t* zh, const char* path, int watch,
+                             struct String_vector* strings, struct Stat* stat);
 
 /**
  * \brief lists the children of a node and get its stat synchronously.
@@ -2205,9 +2261,9 @@ ZOOAPI int zoo_get_children2(zhandle_t *zh, const char *path, int watch,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_wget_children2(zhandle_t *zh, const char *path,
-        watcher_fn watcher, void* watcherCtx,
-        struct String_vector *strings, struct Stat *stat);
+ZOOAPI int zoo_wget_children2(zhandle_t* zh, const char* path,
+                              watcher_fn watcher, void* watcherCtx,
+                              struct String_vector* strings, struct Stat* stat);
 
 /**
  * \brief gets the acl associated with a node synchronously.
@@ -2225,8 +2281,8 @@ ZOOAPI int zoo_wget_children2(zhandle_t *zh, const char *path,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_get_acl(zhandle_t *zh, const char *path, struct ACL_vector *acl,
-                       struct Stat *stat);
+ZOOAPI int zoo_get_acl(zhandle_t* zh, const char* path, struct ACL_vector* acl,
+                       struct Stat* stat);
 
 /**
  * \brief sets the acl associated with a node synchronously.
@@ -2246,8 +2302,8 @@ ZOOAPI int zoo_get_acl(zhandle_t *zh, const char *path, struct ACL_vector *acl,
  * ZINVALIDSTATE - zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  */
-ZOOAPI int zoo_set_acl(zhandle_t *zh, const char *path, int version,
-                           const struct ACL_vector *acl);
+ZOOAPI int zoo_set_acl(zhandle_t* zh, const char* path, int version,
+                       const struct ACL_vector* acl);
 
 /**
  * \brief atomically commits multiple zookeeper operations synchronously.
@@ -2260,7 +2316,7 @@ ZOOAPI int zoo_set_acl(zhandle_t *zh, const char *path, int version,
  * values that can be returned by the ops supported by a multi op (see
  * \ref zoo_acreate, \ref zoo_adelete, \ref zoo_aset).
  */
-ZOOAPI int zoo_multi(zhandle_t *zh, int count, const zoo_op_t *ops, zoo_op_result_t *results);
+ZOOAPI int zoo_multi(zhandle_t* zh, int count, const zoo_op_t* ops, zoo_op_result_t* results);
 
 /**
  * \brief removes the watches for the given path and watcher type.
@@ -2282,8 +2338,8 @@ ZOOAPI int zoo_multi(zhandle_t *zh, int count, const zoo_op_t *ops, zoo_op_resul
  * ZMARSHALLINGERROR - failed to marshall a request; possibly, out of memory
  * ZSYSTEMERROR - a system error occured
  */
-ZOOAPI int zoo_remove_watches(zhandle_t *zh, const char *path,
-        ZooWatcherType wtype, watcher_fn watcher, void *watcherCtx, int local);
+ZOOAPI int zoo_remove_watches(zhandle_t* zh, const char* path,
+                              ZooWatcherType wtype, watcher_fn watcher, void* watcherCtx, int local);
 #endif
 #ifdef __cplusplus
 }
