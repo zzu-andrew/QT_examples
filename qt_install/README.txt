@@ -1,0 +1,1 @@
+将程序放到data目录， 执行完 windeployqt之后，在执行  binarycreator --offline-only -c config/config.xml -p packages install.exe -v 即可

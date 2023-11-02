@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Chinaxinge</Name>
+    <Version>1.0.0</Version>
+    <Title>Chinaxinge</Title>
+    <Publisher>子安</Publisher>
+    <!-- Directory name is used in component.xml -->
+    <StartMenuDir>Chinaxinge</StartMenuDir>
+    <TargetDir>@HomeDir@/Chinaxinge</TargetDir>
+</Installer>
