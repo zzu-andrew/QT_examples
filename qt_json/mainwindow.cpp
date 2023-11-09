@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle("Topic辅助工具");
+    setWindowTitle("Json格式化工具");
 
     m_lpJsoFormPlant = new JsonFormPlant;
 
