@@ -1,17 +1,15 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2023-10-20T17:11:21
+# Project created by QtCreator 2023-11-09T13:37:26
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = qt_http
+TARGET = qt_json
 TEMPLATE = app
-
-include(./http/http.pri)
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -24,13 +22,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-CONFIG += c++17 object_parallel_to_source
+CONFIG += c++17
+CONFIG += staticlib
+
+INCLUDEPATH += $$PWD
 
 SOURCES += \
+        form_plant.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
+        form_plant.h \
         mainwindow.h
 
 FORMS += \
