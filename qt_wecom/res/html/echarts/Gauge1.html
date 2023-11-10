@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ECharts</title>
+  <script src="echarts.min.js"></script>
+</head>
+<body>
+<div id="main" style="height:300px;"></div>
+<script type="text/javascript">        
+  var myChart = echarts.init(document.getElementById('main'));
+  function setGaugeValue(value){
+    var option;
+    
+option = {
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross',
+            crossStyle: {
+                color: '#999'
+            }
+        }
+    },
+    toolbox: {
+        feature: {
+            dataView: {show: false, readOnly: false},
+            magicType: {show: false, type: ['line', 'bar']},
+            restore: {show: false},
+            saveAsImage: {show: false}
+        }
+    },
+    legend: {
+        data: ['转发数', '点击数', '收藏比例']
+    },
+    xAxis: [
+        {
+            type: 'category',
+            data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            axisPointer: {
+                type: 'shadow'
+            }
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value',
+            name: '次数',
+            min: 0,
+            max: 250,
+            interval: 50,
+        },
+        {
+            type: 'value',
+            name: '收藏比例',
+            min: 0,
+            max: 100,
+            interval: 20,
+            axisLabel: {
+                formatter: '{value} %'
+            }
+        }
+    ],
+    series: [
+        {
+            name: '转发数',
+            type: 'bar',
+            data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+        },
+        {
+            name: '点击数',
+            type: 'bar',
+            data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+        },
+        {
+            name: '收藏比例',
+            type: 'line',
+            yAxisIndex: 1,
+            data: [20.0, 20.2, 30.3, 40.5, 60.3, 90.2, 80.3, 83.4, 63.0, 56.5, 62.0, 50.2]
+        }
+    ]
+};
+
+    myChart.setOption(option);
+  }
+  window.onresize = myChart.resize;
+  setGaugeValue(68);
+</script>
+</body>
+</html>

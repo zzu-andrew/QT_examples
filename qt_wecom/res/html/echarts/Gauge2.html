@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ECharts</title>
+  <script src="echarts.min.js"></script>
+</head>
+<body>
+<div id="main" style="height:300px;"></div>
+<script type="text/javascript">        
+  var myChart = echarts.init(document.getElementById('main'));
+  function setGaugeValue(value){
+    var option;
+    
+option = {
+    title: {
+        text: '技术组成'
+    },
+    legend: {
+        top: 'bottom'
+    },
+    toolbox: {
+        show: false,
+        feature: {
+            mark: {show: false},
+            dataView: {show: false, readOnly: false},
+            restore: {show: false},
+            saveAsImage: {show: false}
+        }
+    },
+    series: [
+        {
+            name: '面积模式',
+            type: 'pie',
+            center: ['50%', '50%'],
+            roseType: 'area',
+            itemStyle: {
+                borderRadius: 8
+            },
+            data: [
+                {value: 40, name: 'C++'},
+                {value: 38, name: 'Qt'},
+                {value: 32, name: 'Qss'},
+                {value: 30, name: 'Html'},
+                {value: 28, name: 'js'},
+                {value: 26, name: 'Python'},
+                {value: 22, name: 'MySQL'},
+                {value: 18, name: 'Go'}
+            ]
+        }
+    ]
+};
+
+    myChart.setOption(option);
+  }
+  window.onresize = myChart.resize;
+  setGaugeValue(68);
+</script>
+</body>
+</html>

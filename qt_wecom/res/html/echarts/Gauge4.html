@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ECharts</title>
+  <script src="echarts.min.js"></script>
+</head>
+<body>
+<div id="main" style="height:300px;"></div>
+<script type="text/javascript">        
+  var myChart = echarts.init(document.getElementById('main'));
+  function setGaugeValue(value){
+    var option;
+    
+	option = {
+		title: {
+			text: '代码量'
+		},
+		xAxis: {
+			type: 'category',
+			data: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
+		},
+		yAxis: {
+			type: 'value'
+		},
+		series: [{
+			data: [185, 200, 150, 180, 170, 265, 204],
+			type: 'bar'
+		}]
+	};
+
+    myChart.setOption(option);
+  }
+  window.onresize = myChart.resize;
+  setGaugeValue(68);
+</script>
+</body>
+</html>

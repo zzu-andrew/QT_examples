@@ -1,0 +1,85 @@
+<RCC>
+    <qresource prefix="/qss/res">
+        <file>usricon.jpeg</file>
+        <file>WeComCopy.css</file>
+        <file>WeComCopy.ico</file>
+        <file>WeComCopy.png</file>
+        <file>wecomcopy.qrc</file>
+        <file>WeComCopy.rc</file>
+        <file>WeComCopy.ttf</file>
+        <file>WeComCopy_Tray.png</file>
+        <file>right_arrow.png</file>
+        <file>QRcode.png</file>
+        <file>img/weather/1.png</file>
+        <file>img/weather/2.png</file>
+        <file>img/weather/3.png</file>
+        <file>img/weather/4.png</file>
+        <file>img/weather/5.png</file>
+        <file>img/weather/6.png</file>
+        <file>img/weather/7.png</file>
+        <file>img/weather/8.png</file>
+        <file>img/weather/9.png</file>
+        <file>img/weather/10.png</file>
+        <file>img/weather/11.png</file>
+        <file>img/weather/12.png</file>
+        <file>WeComCopy.json</file>
+        <file>img/cat/cat.png</file>
+        <file>img/cat/eye_bg.png</file>
+        <file>img/cat/eye_black.png</file>
+        <file>img/cat/eye_write.png</file>
+        <file>img/cat/feather.png</file>
+        <file>img/cat/cuteCloud001.png</file>
+        <file>img/cat/cuteCloud002.png</file>
+        <file>img/cat/cuteCloud003.png</file>
+        <file>img/cat/cuteCloud004.png</file>
+        <file>img/cat/cuteCloud005.png</file>
+        <file>img/cat/rain.png</file>
+        <file>user_bg.png</file>
+        <file>Avatar.png</file>
+        <file>img/about.jpg</file>
+        <file>Avatar.gif</file>
+        <file>img/alipay.jpg</file>
+        <file>img/wechat.jpg</file>
+        <file>img/wechat.png</file>
+        <file>img/bg/2007013.jpg</file>
+        <file>img/bg/2007028.jpg</file>
+        <file>img/bg/2007033.jpg</file>
+        <file>img/bg/2007276.jpg</file>
+    </qresource>
+    <qresource prefix="/icon">
+        <file>icon/user (1).jpg</file>
+        <file>icon/user (2).jpg</file>
+        <file>icon/user (3).jpg</file>
+        <file>icon/user (4).jpg</file>
+        <file>icon/user (5).jpg</file>
+        <file>icon/user (6).jpg</file>
+        <file>icon/user (7).jpg</file>
+        <file>icon/user (8).jpg</file>
+        <file>icon/user (9).jpg</file>
+        <file>icon/user (10).jpg</file>
+    </qresource>
+    <qresource prefix="/html">
+        <file>html/css/litewebchat.css</file>
+        <file>html/css/main.css</file>
+        <file>html/img/avatar/A.jpg</file>
+        <file>html/img/avatar/B.jpg</file>
+        <file>html/img/avatar/C.png</file>
+        <file>html/img/paper.png</file>
+        <file>html/js/main.js</file>
+        <file>html/js/vue.js</file>
+        <file>html/js/vue.min.js</file>
+        <file>html/axios.min.js</file>
+        <file>html/index.css</file>
+        <file>html/index.html</file>
+        <file>html/index.js</file>
+        <file>html/index1.html</file>
+        <file>html/LICENSE</file>
+        <file>html/README.md</file>
+        <file>html/echarts/echart_base.html</file>
+        <file>html/echarts/echarts.min.js</file>
+        <file>html/echarts/Gauge1.html</file>
+        <file>html/echarts/Gauge2.html</file>
+        <file>html/echarts/Gauge3.html</file>
+        <file>html/echarts/Gauge4.html</file>
+    </qresource>
+</RCC>
