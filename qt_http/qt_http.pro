@@ -12,6 +12,7 @@ TARGET = qt_http
 TEMPLATE = app
 
 include(./http/http.pri)
+include(httpserver/httpserver.pri)
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -26,11 +27,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++17 object_parallel_to_source
 
+LIBS += -lWs2_32
+
+
+LIBS += -lpthread
+
+
+INCLUDEPATH += http-cpp
+
 SOURCES += \
+        http_client.cpp \
+        http_server.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
+        http_client.h \
+        http_server.h \
         mainwindow.h
 
 FORMS += \
